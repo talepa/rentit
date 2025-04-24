@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -26,7 +27,7 @@ export default {
         border: '#E0E0E0', // Borders/Divider
         input: '#E0E0E0',
         ring: '#5C6BC0', // Primary color for focus states
-        background: '#D6BCFA', // Soft Purple background
+        background: '#F8F9FA', // Background
         foreground: '#2D3436', // Text (Dark)
         primary: {
           DEFAULT: '#5C6BC0', // Indigo
