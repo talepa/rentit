@@ -10,6 +10,8 @@ import Signup from "./pages/Signup";
 import CategoryListing from "./pages/CategoryListing";
 import ItemDetail from "./pages/ItemDetail";
 import NotFound from "./pages/NotFound";
+import PostListing from "./pages/PostListing";
+import MyBookings from "./pages/MyBookings";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/categories" element={<CategoryListing />} />
           <Route path="/categories/:category" element={<CategoryListing />} />
           <Route path="/item/:id" element={<ItemDetail />} />
+          <Route path="/post-listing" element={<PostListing />} />
+          <Route path="/my-bookings" element={<MyBookings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
