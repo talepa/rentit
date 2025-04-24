@@ -7,40 +7,37 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 0 0% 13%;
+    --background: 220 20% 98%; /* #F8F9FA */
+    --foreground: 210 16% 20%; /* #2D3436 */
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 13%;
+    --card-foreground: 210 16% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 13%;
+    --popover-foreground: 210 16% 20%;
 
-    --primary: 230 50% 56%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 240 47% 58%; /* #5C6BC0 */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 32 100% 57%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 30 100% 57%; /* #FFA726 */
+    --secondary-foreground: 0 0% 100%;
 
-    --accent: 120 43% 57%;
-    --accent-foreground: 210 40% 98%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 120 43% 57%; /* #66BB6A */
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 214 20% 88%; /* #E0E0E0 */
+    --input: 214 20% 88%;
+    --ring: 240 47% 58%;
 
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 0 0% 13%;
-    --foreground: 210 40% 98%;
+    --background: 210 16% 20%;
+    --foreground: 220 20% 98%;
 
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -48,17 +45,14 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 230 50% 56%;
+    --primary: 240 47% 58%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 32 100% 57%;
+    --secondary: 30 100% 57%;
     --secondary-foreground: 210 40% 98%;
 
     --accent: 120 43% 57%;
     --accent-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -75,7 +69,7 @@
   }
 
   body {
-    @apply bg-appbg text-textdark font-inter;
+    @apply bg-background text-foreground font-inter;
   }
 
   h1, h2, h3, h4, h5, h6 {
