@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import SearchBar from '@/components/SearchBar';
@@ -8,14 +7,44 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 const Index = () => {
-  // Mock data for categories
+  // Mock data for categories with images
   const categories = [
-    { id: 'electronics', name: 'Electronics', icon: 'https://via.placeholder.com/40', color: 'bg-blue-100' },
-    { id: 'vehicles', name: 'Vehicles', icon: 'https://via.placeholder.com/40', color: 'bg-green-100' },
-    { id: 'tools', name: 'Tools', icon: 'https://via.placeholder.com/40', color: 'bg-yellow-100' },
-    { id: 'homestay', name: 'Home Stays', icon: 'https://via.placeholder.com/40', color: 'bg-purple-100' },
-    { id: 'clothing', name: 'Clothing', icon: 'https://via.placeholder.com/40', color: 'bg-pink-100' },
-    { id: 'services', name: 'Services', icon: 'https://via.placeholder.com/40', color: 'bg-indigo-100' },
+    { 
+      id: 'electronics', 
+      name: 'Electronics', 
+      icon: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=500', 
+      color: 'bg-blue-100' 
+    },
+    { 
+      id: 'vehicles', 
+      name: 'Vehicles', 
+      icon: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=500', 
+      color: 'bg-green-100' 
+    },
+    { 
+      id: 'tools', 
+      name: 'Tools', 
+      icon: 'https://images.unsplash.com/photo-1581166397057-235af2b3c6dd?auto=format&fit=crop&q=80&w=500', 
+      color: 'bg-yellow-100' 
+    },
+    { 
+      id: 'homestay', 
+      name: 'Home Stays', 
+      icon: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=500', 
+      color: 'bg-purple-100' 
+    },
+    { 
+      id: 'clothing', 
+      name: 'Clothing', 
+      icon: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&q=80&w=500', 
+      color: 'bg-pink-100' 
+    },
+    { 
+      id: 'services', 
+      name: 'Services', 
+      icon: 'https://images.unsplash.com/photo-1521791055366-0d553872125f?auto=format&fit=crop&q=80&w=500', 
+      color: 'bg-indigo-100' 
+    },
   ];
 
   // Mock data for featured products
@@ -155,10 +184,18 @@ const Index = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-primary to-primary/80 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-20">
+      <div 
+        className="bg-gradient-to-r from-primary to-primary/80 text-white relative"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=1500')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
+        <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-20 relative">
           <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 font-poppins">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 font-poppins drop-shadow-md">
               Rent Anything, Anywhere, Anytime
             </h1>
             <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto opacity-90">
@@ -171,7 +208,10 @@ const Index = () => {
       
       {/* Categories Section */}
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        <h2 className="text-xl font-bold mb-4 font-poppins text-textdark">Categories</h2>
+        <div className="relative mb-6">
+          <div className="absolute inset-0 bg-primary/10 rounded-lg"></div>
+          <h2 className="text-xl font-bold py-3 px-4 font-poppins text-textdark relative">Categories</h2>
+        </div>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
           {categories.map(category => (
             <CategoryCard 
@@ -204,28 +244,38 @@ const Index = () => {
         </div>
       </div>
       
-      {/* Featured Products */}
+      {/* Featured Sections with Heading Backgrounds */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mb-4">
+          <div className="absolute inset-0 bg-primary/10 rounded-lg"></div>
+          <h2 className="text-xl font-bold py-3 px-4 font-poppins text-textdark relative">Featured Products</h2>
+        </div>
         <FeatureSection 
-          title="Featured Products" 
+          title="" 
           viewAllLink="/categories/products"
           items={featuredProducts}
         />
       </div>
       
-      {/* Featured Services */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mb-4">
+          <div className="absolute inset-0 bg-secondary/10 rounded-lg"></div>
+          <h2 className="text-xl font-bold py-3 px-4 font-poppins text-textdark relative">Featured Services</h2>
+        </div>
         <FeatureSection 
-          title="Featured Services" 
+          title="" 
           viewAllLink="/categories/services"
           items={featuredServices}
         />
       </div>
       
-      {/* Featured Stays */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div className="relative mb-4">
+          <div className="absolute inset-0 bg-accent/10 rounded-lg"></div>
+          <h2 className="text-xl font-bold py-3 px-4 font-poppins text-textdark relative">Places to Stay</h2>
+        </div>
         <FeatureSection 
-          title="Places to Stay" 
+          title="" 
           viewAllLink="/categories/stays"
           items={featuredStays}
         />

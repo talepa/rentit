@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import ItemCard from '@/components/ItemCard';
 import { Button } from '@/components/ui/button';
@@ -97,10 +97,30 @@ const mockItems = [
     distance: '1 mile',
     type: 'service'
   },
+  { 
+    id: 'st1', 
+    title: 'Modern Downtown Apartment', 
+    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=500', 
+    price: 120,
+    rating: 4.9,
+    category: 'Apartment',
+    distance: 'Downtown',
+    type: 'stay'
+  },
+  { 
+    id: 'st2', 
+    title: 'Cozy Cabin Retreat', 
+    image: 'https://images.unsplash.com/photo-1518732714860-b62714ce0c59?auto=format&fit=crop&q=80&w=500', 
+    price: 95,
+    rating: 4.7,
+    category: 'Cabin',
+    distance: '15 miles',
+    type: 'stay'
+  },
 ];
 
 // Category names for title display
-const categoryNames = {
+const categoryNames: Record<string, string> = {
   'electronics': 'Electronics',
   'vehicles': 'Vehicles',
   'tools': 'Tools',
@@ -113,11 +133,29 @@ const categoryNames = {
 
 const CategoryListing = () => {
   const { category } = useParams();
+  const location = useLocation();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 200]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('all');
   const [sortBy, setSortBy] = useState('recommended');
+  
+  // Parse search params
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const searchParam = searchParams.get('search');
+    if (searchParam) {
+      setSearchQuery(searchParam);
+    }
+    
+    // Add location-based search handling if needed
+    const lat = searchParams.get('lat');
+    const lng = searchParams.get('lng');
+    if (lat && lng) {
+      console.log(`Searching near location: ${lat}, ${lng}`);
+      // Here you would typically do something with the location data
+    }
+  }, [location.search]);
   
   // Filter items based on category and/or type
   const filteredItems = mockItems.filter(item => {
@@ -128,7 +166,7 @@ const CategoryListing = () => {
     
     // Filter by category
     if (category && category !== 'products' && category !== 'services' && category !== 'stays') {
-      if (item.category.toLowerCase() !== categoryNames[category].toLowerCase()) {
+      if (item.category.toLowerCase() !== categoryNames[category]?.toLowerCase()) {
         return false;
       }
     } else if (category === 'products' && item.type !== 'product') {
@@ -169,7 +207,7 @@ const CategoryListing = () => {
     setIsFilterOpen(!isFilterOpen);
   };
   
-  const handlePriceChange = (values) => {
+  const handlePriceChange = (values: number[]) => {
     setPriceRange(values);
   };
   
@@ -323,7 +361,7 @@ const CategoryListing = () => {
                 rating={item.rating}
                 category={item.category}
                 distance={item.distance}
-                type={item.type}
+                type={item.type as "product" | "service" | "stay"}
               />
             ))}
           </div>
