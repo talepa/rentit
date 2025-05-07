@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import PostAdd from "./pages/PostAdd";
 import MyBookings from "./pages/MyBookings";
 import Messages from "./pages/Messages";
+import MyListings from "./pages/MyListings";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/item/:id" element={<ItemDetail />} />
           <Route path="/post-add" element={<PostAdd />} />
           <Route path="/my-bookings" element={<MyBookings />} />
+          <Route path="/my-listings" element={<MyListings />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
