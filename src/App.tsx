@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +12,7 @@ import ItemDetail from "./pages/ItemDetail";
 import NotFound from "./pages/NotFound";
 import PostAdd from "./pages/PostAdd";
 import MyBookings from "./pages/MyBookings";
+import Messages from "./pages/Messages";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +31,7 @@ const App = () => (
           <Route path="/item/:id" element={<ItemDetail />} />
           <Route path="/post-add" element={<PostAdd />} />
           <Route path="/my-bookings" element={<MyBookings />} />
+          <Route path="/messages" element={<Messages />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
