@@ -37,22 +37,22 @@ const ItemCard = ({
 
   return (
     <Link to={`/item/${id}`}>
-      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 group">
-        <div className="relative">
+      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group transform hover:translate-y-[-5px] animate-fade-in">
+        <div className="relative overflow-hidden">
           <img 
             src={image} 
             alt={title} 
-            className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500"
           />
-          <div className="absolute top-2 left-2">
+          <div className="absolute top-2 left-2 animate-slide-in-right">
             {getTypeBadge()}
           </div>
         </div>
         <div className="p-4">
           <div className="flex justify-between items-start">
-            <h3 className="font-medium line-clamp-2 text-textdark">{title}</h3>
+            <h3 className="font-medium line-clamp-2 text-textdark group-hover:text-primary transition-colors duration-300">{title}</h3>
             {rating > 0 && (
-              <div className="flex items-center bg-accent/10 px-1.5 py-0.5 rounded">
+              <div className="flex items-center bg-accent/10 px-1.5 py-0.5 rounded group-hover:bg-accent/20 transition-colors duration-300">
                 <Star className="h-3 w-3 fill-accent text-accent" />
                 <span className="text-xs ml-1 font-medium">{rating.toFixed(1)}</span>
               </div>
@@ -66,7 +66,7 @@ const ItemCard = ({
               {price}
               <span className="text-xs font-normal text-gray-500">/day</span>
             </p>
-            <button className="text-primary text-sm hover:underline">Details</button>
+            <button className="text-primary text-sm relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-hover:after:origin-bottom-left">Details</button>
           </div>
         </div>
       </div>

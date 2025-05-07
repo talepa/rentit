@@ -11,16 +11,16 @@ const Navbar = () => {
   const isHomepage = location.pathname === '/';
 
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50">
+    <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0">
+            <Link to="/" className="flex-shrink-0 group hover:scale-105 transition-transform duration-300">
               <div className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                  <span className="text-white font-poppins font-bold">R</span>
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center transform transition-all duration-300 group-hover:shadow-lg">
+                  <span className="text-white font-poppins font-bold text-lg">R</span>
                 </div>
-                <h1 className="ml-2 text-xl font-bold text-primary">RentMate</h1>
+                <h1 className="ml-2 text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Rentit</h1>
               </div>
             </Link>
           </div>
@@ -32,24 +32,25 @@ const Navbar = () => {
           )}
           
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/categories" className="text-textdark hover:text-primary px-3 py-2 rounded-md text-sm font-medium flex items-center">
-              <Grid2X2 className="h-4 w-4 mr-1" />
+            <Link to="/categories" className="text-textdark hover:text-primary px-3 py-2 rounded-md text-sm font-medium flex items-center relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left group transition-all duration-300">
+              <Grid2X2 className="h-4 w-4 mr-1 group-hover:text-primary transition-colors duration-300" />
               <span>Categories</span>
             </Link>
-            <Link to="/post-add" className="text-primary hover:text-primary/90 px-3 py-2 rounded-md text-sm font-medium flex items-center">
+            <Link to="/post-add" className="relative overflow-hidden bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-white px-4 py-2 rounded-md text-sm font-medium flex items-center transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md">
               <FilePlus className="h-4 w-4 mr-1" />
               <span>Post the Add</span>
+              <span className="absolute top-0 right-0 w-12 h-full bg-white/20 transform skew-x-30 translate-x-20 transition-transform ease-out duration-700 group-hover:translate-x-32"></span>
             </Link>
-            <Link to="/my-bookings" className="text-textdark hover:text-primary px-3 py-2 rounded-md text-sm font-medium flex items-center">
-              <BookOpen className="h-4 w-4 mr-1" />
+            <Link to="/my-bookings" className="text-textdark hover:text-primary px-3 py-2 rounded-md text-sm font-medium flex items-center relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left group transition-all duration-300">
+              <BookOpen className="h-4 w-4 mr-1 group-hover:text-primary transition-colors duration-300" />
               <span>My Bookings</span>
             </Link>
-            <Link to="/messages" className="text-textdark hover:text-primary px-3 py-2 rounded-md text-sm font-medium flex items-center">
-              <MessageSquare className="h-4 w-4 mr-1" />
+            <Link to="/messages" className="text-textdark hover:text-primary px-3 py-2 rounded-md text-sm font-medium flex items-center relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left group transition-all duration-300">
+              <MessageSquare className="h-4 w-4 mr-1 group-hover:text-primary transition-colors duration-300" />
               <span>Messages</span>
             </Link>
             <Link to="/login">
-              <Button variant="outline" className="flex items-center space-x-1">
+              <Button variant="outline" className="flex items-center space-x-1 border-primary text-primary hover:text-white hover:bg-primary transition-colors duration-300 animate-fade-in">
                 <User className="h-4 w-4 mr-1" />
                 <span>Login</span>
               </Button>
@@ -57,7 +58,7 @@ const Navbar = () => {
           </div>
           
           <div className="flex md:hidden">
-            <Button variant="ghost" size="icon" className="text-textdark" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <Button variant="ghost" size="icon" className="text-textdark hover:bg-primary/10 hover:text-primary transition-colors duration-300" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <Menu className="h-6 w-6" />
             </Button>
           </div>
@@ -72,23 +73,23 @@ const Navbar = () => {
                 <SearchBar compact={true} />
               </div>
             )}
-            <Link to="/categories" className="flex items-center px-3 py-2 rounded-md text-base font-medium text-textdark hover:text-primary">
+            <Link to="/categories" className="flex items-center px-3 py-2 rounded-md text-base font-medium text-textdark hover:text-primary hover:bg-primary/5 transition-all duration-300">
               <Grid2X2 className="h-4 w-4 mr-2" />
               <span>Categories</span>
             </Link>
-            <Link to="/post-add" className="flex items-center px-3 py-2 rounded-md text-base font-medium text-primary hover:text-primary/90">
+            <Link to="/post-add" className="flex items-center px-3 py-2 rounded-md text-base font-medium text-white bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary transition-all duration-300 transform hover:scale-[1.02]">
               <FilePlus className="h-4 w-4 mr-2" />
               <span>Post the Add</span>
             </Link>
-            <Link to="/my-bookings" className="flex items-center px-3 py-2 rounded-md text-base font-medium text-textdark hover:text-primary">
+            <Link to="/my-bookings" className="flex items-center px-3 py-2 rounded-md text-base font-medium text-textdark hover:text-primary hover:bg-primary/5 transition-all duration-300">
               <BookOpen className="h-4 w-4 mr-2" />
               <span>My Bookings</span>
             </Link>
-            <Link to="/messages" className="flex items-center px-3 py-2 rounded-md text-base font-medium text-textdark hover:text-primary">
+            <Link to="/messages" className="flex items-center px-3 py-2 rounded-md text-base font-medium text-textdark hover:text-primary hover:bg-primary/5 transition-all duration-300">
               <MessageSquare className="h-4 w-4 mr-2" />
               <span>Messages</span>
             </Link>
-            <Link to="/login" className="block px-3 py-2 rounded-md text-base font-medium text-primary">
+            <Link to="/login" className="block px-3 py-2 rounded-md text-base font-medium text-primary hover:bg-primary hover:text-white transition-all duration-300">
               Login / Sign up
             </Link>
           </div>
