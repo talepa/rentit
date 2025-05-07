@@ -21,14 +21,14 @@ const FeatureSection = ({ title, viewAllLink, items }: FeatureSectionProps) => {
   return (
     <div className="my-8 animate-fade-in">
       <div className="flex justify-between items-center mb-4">
-        <div className="relative">
-          <h2 className="text-xl font-bold font-poppins text-textdark relative z-10">{title}</h2>
-          <div className="absolute -bottom-1 left-0 h-3 w-1/2 bg-primary/10 rounded-full -z-[1]"></div>
+        <div className="relative group">
+          <h2 className="text-xl font-bold font-poppins text-textdark relative z-10 group-hover:translate-x-1 transition-transform">{title}</h2>
+          <div className="absolute -bottom-1 left-0 h-3 w-1/2 bg-primary/10 rounded-full -z-[1] group-hover:w-full transition-all duration-500"></div>
         </div>
         {viewAllLink && (
           <a 
             href={viewAllLink} 
-            className="text-primary text-sm font-medium relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left"
+            className="text-primary text-sm font-medium relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left hover:scale-105 transition-transform"
           >
             View All
           </a>
