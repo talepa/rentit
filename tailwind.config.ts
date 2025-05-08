@@ -26,40 +26,40 @@ export default {
       colors: {
         border: '#D8E2EF', // Lighter border
         input: '#D8E2EF',
-        ring: '#4A80F0', // Primary blue for focus states
-        background: '#F1F6FB', // Light blue-tinted background
-        foreground: '#2D3748', // Text (Dark)
+        ring: '#3B82F6', // Updated primary blue
+        background: '#F8FAFC', // Lighter background
+        foreground: '#1E293B', // Darker text for better contrast
         primary: {
-          DEFAULT: '#4A80F0', // Bright blue
+          DEFAULT: '#3B82F6', // More vibrant blue for rental context
           foreground: '#FFFFFF', // Text (Light)
         },
         secondary: {
-          DEFAULT: '#FF7D54', // Warm Orange
+          DEFAULT: '#F97316', // Warmer orange for rental context
           foreground: '#FFFFFF',
         },
         accent: {
-          DEFAULT: '#4CD964', // Fresh Green
+          DEFAULT: '#10B981', // Fresh teal-green
           foreground: '#FFFFFF',
         },
         muted: {
-          DEFAULT: '#F1F6FB',
-          foreground: '#2D3748',
+          DEFAULT: '#F1F5F9',
+          foreground: '#64748B',
         },
         destructive: {
-          DEFAULT: 'hsl(0, 84.2%, 60.2%)',
-          foreground: 'hsl(0, 0%, 98%)',
+          DEFAULT: '#EF4444',
+          foreground: '#FFFFFF',
         },
         popover: {
           DEFAULT: '#FFFFFF',
-          foreground: '#2D3748',
+          foreground: '#1E293B',
         },
         card: {
           DEFAULT: '#FFFFFF',
-          foreground: '#2D3748',
+          foreground: '#1E293B',
         },
-        // Adding appbg and textdark for consistency with existing code
-        appbg: '#F1F6FB',
-        textdark: '#2D3748',
+        // Adding app-specific colors
+        appbg: '#F8FAFC',
+        textdark: '#1E293B',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -76,8 +76,8 @@ export default {
           to: { height: "0" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 5px rgba(74, 128, 240, 0.5)" },
-          "50%": { boxShadow: "0 0 15px rgba(74, 128, 240, 0.8)" },
+          "0%, 100%": { boxShadow: "0 0 5px rgba(59, 130, 246, 0.5)" },
+          "50%": { boxShadow: "0 0 15px rgba(59, 130, 246, 0.8)" },
         },
         "slide-up-fade": {
           "0%": { opacity: "0", transform: "translateY(10px)" },
@@ -103,6 +103,16 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-5px)" },
         },
+        "spin-slow": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+        "bounce-in": {
+          "0%": { transform: "scale(0.3)", opacity: "0" },
+          "50%": { transform: "scale(1.05)", opacity: "0.8" },
+          "70%": { transform: "scale(0.9)", opacity: "1" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -114,6 +124,8 @@ export default {
         "fade-in": "fade-in 0.5s ease-out",
         "scale-in": "scale-in 0.3s ease-out",
         "float": "float 3s infinite ease-in-out",
+        "spin-slow": "spin-slow 10s linear infinite",
+        "bounce-in": "bounce-in 0.7s ease-out",
       },
       skew: {
         '30': '30deg',
