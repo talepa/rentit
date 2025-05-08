@@ -24,26 +24,26 @@ export default {
         'inter': ['Inter', 'sans-serif'],
       },
       colors: {
-        border: '#E0E0E0', // Borders/Divider
-        input: '#E0E0E0',
-        ring: '#5C6BC0', // Primary color for focus states
-        background: '#F8F9FA', // Background
-        foreground: '#2D3436', // Text (Dark)
+        border: '#D8E2EF', // Lighter border
+        input: '#D8E2EF',
+        ring: '#4A80F0', // Primary blue for focus states
+        background: '#F1F6FB', // Light blue-tinted background
+        foreground: '#2D3748', // Text (Dark)
         primary: {
-          DEFAULT: '#5C6BC0', // Indigo
+          DEFAULT: '#4A80F0', // Bright blue
           foreground: '#FFFFFF', // Text (Light)
         },
         secondary: {
-          DEFAULT: '#FFA726', // Warm Orange
+          DEFAULT: '#FF7D54', // Warm Orange
           foreground: '#FFFFFF',
         },
         accent: {
-          DEFAULT: '#66BB6A', // Soft Green
+          DEFAULT: '#4CD964', // Fresh Green
           foreground: '#FFFFFF',
         },
         muted: {
-          DEFAULT: '#F8F9FA',
-          foreground: '#2D3436',
+          DEFAULT: '#F1F6FB',
+          foreground: '#2D3748',
         },
         destructive: {
           DEFAULT: 'hsl(0, 84.2%, 60.2%)',
@@ -51,15 +51,15 @@ export default {
         },
         popover: {
           DEFAULT: '#FFFFFF',
-          foreground: '#2D3436',
+          foreground: '#2D3748',
         },
         card: {
           DEFAULT: '#FFFFFF',
-          foreground: '#2D3436',
+          foreground: '#2D3748',
         },
         // Adding appbg and textdark for consistency with existing code
-        appbg: '#F8F9FA',
-        textdark: '#2D3436',
+        appbg: '#F1F6FB',
+        textdark: '#2D3748',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -75,10 +75,30 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "pulse-glow": {
+          "0%, 100%": { boxShadow: "0 0 5px rgba(74, 128, 240, 0.5)" },
+          "50%": { boxShadow: "0 0 15px rgba(74, 128, 240, 0.8)" },
+        },
+        "slide-up-fade": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "slide-down-fade": {
+          "0%": { opacity: "0", transform: "translateY(-10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "bounce-subtle": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-3px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-glow": "pulse-glow 2s infinite ease-in-out",
+        "slide-up-fade": "slide-up-fade 0.3s ease-out",
+        "slide-down-fade": "slide-down-fade 0.3s ease-out",
+        "bounce-subtle": "bounce-subtle 2s infinite ease-in-out",
       },
       skew: {
         '30': '30deg',

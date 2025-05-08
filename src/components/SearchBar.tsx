@@ -82,14 +82,14 @@ const SearchBar = ({ compact = false, className = '' }: SearchBarProps) => {
 
   return (
     <div className={`w-full max-w-3xl mx-auto ${className}`}>
-      <form onSubmit={handleSearch} className="relative flex items-center">
-        <div className="absolute left-3 text-gray-400">
+      <form onSubmit={handleSearch} className="relative flex items-center group">
+        <div className="absolute left-3 text-primary/70 group-hover:text-primary transition-colors duration-300">
           <Search className="h-5 w-5" />
         </div>
         <Input 
           type="text"
-          placeholder={compact ? "Search..." : "Search for products, services or stays..."}
-          className={`pl-10 ${compact ? 'pr-10' : 'pr-24'} ${compact ? 'py-2' : 'py-6'} rounded-full border border-gray-200 bg-white w-full shadow-sm focus:border-primary`}
+          placeholder={compact ? "Search..." : "Search for rentals..."}
+          className={`pl-10 ${compact ? 'pr-10' : 'pr-24'} ${compact ? 'py-2' : 'py-6'} rounded-full border border-input bg-white/80 backdrop-blur-sm w-full shadow-sm hover:shadow-md focus:border-primary transition-all duration-300 hover-lift`}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -98,7 +98,7 @@ const SearchBar = ({ compact = false, className = '' }: SearchBarProps) => {
             type="button"
             variant="ghost"
             size="icon"
-            className="mr-1 hover:bg-secondary/20 hover:text-secondary"
+            className="mr-1 hover:bg-secondary/20 hover:text-secondary btn-animated"
             onClick={handleLocationSearch}
             disabled={isLocating}
           >
@@ -111,7 +111,7 @@ const SearchBar = ({ compact = false, className = '' }: SearchBarProps) => {
           {!compact && (
             <Button 
               type="submit"
-              className="bg-secondary hover:bg-secondary/90 text-white font-medium rounded-full px-4 py-2 hover:scale-105 transition-transform"
+              className="bg-secondary hover:bg-secondary/90 text-white font-medium rounded-full px-4 py-2 btn-animated"
             >
               Search
             </Button>
