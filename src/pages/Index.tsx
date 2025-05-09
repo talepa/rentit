@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import SearchBar from '@/components/SearchBar';
-import CategoryCard from '@/components/CategoryCard';
+import CategoryCard, { CategoryCarousel } from '@/components/CategoryCard';
 import FeatureSection from '@/components/FeatureSection';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -44,6 +44,24 @@ const Index = () => {
       name: 'Services', 
       icon: 'https://images.unsplash.com/photo-1521791055366-0d553872125f?auto=format&fit=crop&q=80&w=500', 
       color: 'bg-indigo-100' 
+    },
+    { 
+      id: 'outdoor', 
+      name: 'Outdoor', 
+      icon: 'https://images.unsplash.com/photo-1510076857177-7470076d4098?auto=format&fit=crop&q=80&w=500', 
+      color: 'bg-emerald-100' 
+    },
+    { 
+      id: 'furniture', 
+      name: 'Furniture', 
+      icon: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=500', 
+      color: 'bg-amber-100' 
+    },
+    { 
+      id: 'events', 
+      name: 'Events', 
+      icon: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=500', 
+      color: 'bg-rose-100' 
     },
   ];
 
@@ -212,17 +230,9 @@ const Index = () => {
           <div className="absolute inset-0 bg-primary/10 rounded-lg"></div>
           <h2 className="text-xl font-bold py-3 px-4 font-poppins text-textdark relative">Categories</h2>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
-          {categories.map(category => (
-            <CategoryCard 
-              key={category.id}
-              id={category.id}
-              name={category.name}
-              icon={category.icon}
-              color={category.color}
-            />
-          ))}
-        </div>
+        
+        {/* Replace grid with carousel */}
+        <CategoryCarousel categories={categories} />
       </div>
 
       {/* Become a Provider Section */}

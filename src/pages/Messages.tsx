@@ -186,13 +186,13 @@ const Messages = () => {
   return (
     <div className="min-h-screen bg-appbg">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-primary mb-6 animate-fade-in">Messages</h1>
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-primary mb-4 md:mb-6 animate-fade-in">Messages</h1>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {/* Conversations sidebar - show on desktop or when not in chat view on mobile */}
           <div className={`md:col-span-1 bg-white rounded-lg shadow-md overflow-hidden ${showMobileChat ? 'hidden md:block' : 'block'} animate-slide-up-fade`}>
-            <div className="p-4 border-b bg-primary/5">
+            <div className="p-3 md:p-4 border-b bg-primary/5">
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-primary" />
                 <Input 
@@ -204,47 +204,48 @@ const Messages = () => {
               </div>
             </div>
             <div className="overflow-y-auto max-h-[calc(100vh-15rem)]">
-              {filteredConversations.map(conversation => (
-                <div 
-                  key={conversation.id}
-                  className={`p-4 border-b cursor-pointer hover:bg-primary/5 transition-all duration-300 ${
-                    selectedConversation === conversation.id ? 'bg-primary/10' : ''
-                  } ${conversation.unread ? 'font-medium' : ''}`}
-                  onClick={() => selectConversation(conversation.id)}
-                >
-                  <div className="flex items-center">
-                    <div className="relative flex-shrink-0 h-12 w-12 rounded-full overflow-hidden">
-                      <img 
-                        src={conversation.avatar} 
-                        alt={conversation.user}
-                        className="h-full w-full object-cover"
-                      />
-                      {conversation.online && (
-                        <span className="absolute bottom-0 right-0 h-3 w-3 bg-accent rounded-full border-2 border-white"></span>
-                      )}
-                    </div>
-                    <div className="ml-4 flex-1">
-                      <div className="flex items-center justify-between">
-                        <h3 className={`text-sm font-medium ${selectedConversation === conversation.id ? 'text-primary' : ''} transition-colors`}>
-                          {conversation.user}
-                        </h3>
-                        <span className="text-xs text-gray-500">{conversation.time}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className={`text-sm ${conversation.unread ? 'text-gray-800' : 'text-gray-600'} truncate max-w-[180px]`}>
-                          {conversation.lastMessage}
-                        </p>
-                        {conversation.unread && (
-                          <Badge className="h-5 w-5 flex items-center justify-center p-0 rounded-full bg-primary">
-                            <span className="text-xs">1</span>
-                          </Badge>
+              {filteredConversations.length > 0 ? (
+                filteredConversations.map(conversation => (
+                  <div 
+                    key={conversation.id}
+                    className={`p-3 md:p-4 border-b cursor-pointer hover:bg-primary/5 transition-all duration-300 ${
+                      selectedConversation === conversation.id ? 'bg-primary/10' : ''
+                    } ${conversation.unread ? 'font-medium' : ''}`}
+                    onClick={() => selectConversation(conversation.id)}
+                  >
+                    <div className="flex items-center">
+                      <div className="relative flex-shrink-0 h-10 md:h-12 w-10 md:w-12 rounded-full overflow-hidden">
+                        <img 
+                          src={conversation.avatar} 
+                          alt={conversation.user}
+                          className="h-full w-full object-cover"
+                        />
+                        {conversation.online && (
+                          <span className="absolute bottom-0 right-0 h-3 w-3 bg-accent rounded-full border-2 border-white"></span>
                         )}
+                      </div>
+                      <div className="ml-3 md:ml-4 flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <h3 className={`text-sm font-medium truncate ${selectedConversation === conversation.id ? 'text-primary' : ''} transition-colors`}>
+                            {conversation.user}
+                          </h3>
+                          <span className="text-xs text-gray-500 whitespace-nowrap ml-1">{conversation.time}</span>
+                        </div>
+                        <div className="flex items-center justify-between mt-1">
+                          <p className={`text-xs md:text-sm ${conversation.unread ? 'text-gray-800' : 'text-gray-600'} truncate max-w-[120px] md:max-w-[180px]`}>
+                            {conversation.lastMessage}
+                          </p>
+                          {conversation.unread && (
+                            <Badge className="h-5 w-5 flex items-center justify-center p-0 rounded-full bg-primary ml-1 flex-shrink-0">
+                              <span className="text-xs">1</span>
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-              {filteredConversations.length === 0 && (
+                ))
+              ) : (
                 <div className="p-8 text-center text-gray-500 animate-fade-in">
                   <MessageSquare className="h-12 w-12 mx-auto text-gray-300 mb-3" />
                   <p>No conversations found</p>
@@ -254,11 +255,11 @@ const Messages = () => {
           </div>
           
           {/* Message content - show on desktop or when in chat view on mobile */}
-          <div className={`md:col-span-2 bg-white rounded-lg shadow-md flex flex-col ${showMobileChat ? 'block' : 'hidden md:flex'} animate-slide-up-fade`}>
+          <div className={`md:col-span-2 bg-white rounded-lg shadow-md flex flex-col h-[calc(100vh-13rem)] md:h-[calc(100vh-15rem)] ${showMobileChat ? 'block' : 'hidden md:flex'} animate-slide-up-fade`}>
             {selectedConversation ? (
               <>
                 {/* Header */}
-                <div className="p-4 border-b bg-primary/5 flex items-center justify-between">
+                <div className="p-3 md:p-4 border-b bg-primary/5 flex items-center justify-between">
                   <div className="flex items-center">
                     <Button
                       variant="ghost"
@@ -268,18 +269,18 @@ const Messages = () => {
                     >
                       <ArrowLeft className="h-5 w-5" />
                     </Button>
-                    <div className="relative flex-shrink-0 h-10 w-10 rounded-full overflow-hidden">
+                    <div className="relative flex-shrink-0 h-9 w-9 md:h-10 md:w-10 rounded-full overflow-hidden">
                       <img 
                         src={conversations.find(c => c.id === selectedConversation)?.avatar || "/placeholder.svg"}
                         alt="User avatar" 
                         className="h-full w-full object-cover"
                       />
                       {conversations.find(c => c.id === selectedConversation)?.online && (
-                        <span className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-accent rounded-full border-2 border-white"></span>
+                        <span className="absolute bottom-0 right-0 h-2 w-2 md:h-2.5 md:w-2.5 bg-accent rounded-full border-2 border-white"></span>
                       )}
                     </div>
-                    <div className="ml-3">
-                      <h3 className="text-base font-medium text-primary">
+                    <div className="ml-2 md:ml-3 min-w-0">
+                      <h3 className="text-sm md:text-base font-medium text-primary truncate">
                         {conversations.find(c => c.id === selectedConversation)?.user}
                       </h3>
                       <p className="text-xs text-accent">
@@ -287,16 +288,16 @@ const Messages = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex space-x-2">
-                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10">
+                  <div className="flex space-x-1 md:space-x-2">
+                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10 h-8 w-8">
                       <Phone className="h-4 w-4 text-primary" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10">
+                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10 h-8 w-8">
                       <Video className="h-4 w-4 text-primary" />
                     </Button>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10">
+                        <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10 h-8 w-8">
                           <MoreVertical className="h-4 w-4 text-primary" />
                         </Button>
                       </DropdownMenuTrigger>
@@ -310,7 +311,7 @@ const Messages = () => {
                 </div>
                 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[calc(100vh-25rem)] bg-gradient-to-b from-white to-primary/5">
+                <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-gradient-to-b from-white to-primary/5">
                   <div className="text-center">
                     <span className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full inline-block">
                       Today
@@ -323,7 +324,7 @@ const Messages = () => {
                       className={`flex ${message.isMe ? 'justify-end' : 'justify-start'} animate-fade-in`}
                     >
                       {!message.isMe && (
-                        <Avatar className="h-8 w-8 mr-2 mt-1">
+                        <Avatar className="h-7 w-7 md:h-8 md:w-8 mr-2 mt-1">
                           <AvatarImage 
                             src={conversations.find(c => c.id === selectedConversation)?.avatar} 
                             alt={message.sender} 
@@ -332,13 +333,13 @@ const Messages = () => {
                         </Avatar>
                       )}
                       <div 
-                        className={`max-w-[80%] rounded-2xl px-4 py-2 ${
+                        className={`max-w-[80%] rounded-2xl px-3 py-2 md:px-4 md:py-2 ${
                           message.isMe 
                             ? 'bg-primary text-white rounded-br-none animate-slide-in-right' 
                             : 'bg-gray-100 rounded-bl-none'
                         }`}
                       >
-                        <p>{message.content}</p>
+                        <p className="text-sm md:text-base break-words">{message.content}</p>
                         <p className={`text-xs mt-1 text-right ${message.isMe ? 'text-primary-foreground/80' : 'text-gray-500'}`}>
                           {formatMessageTime(message.time)}
                         </p>
@@ -348,14 +349,14 @@ const Messages = () => {
                   
                   {isTyping && (
                     <div className="flex justify-start">
-                      <Avatar className="h-8 w-8 mr-2 mt-1">
+                      <Avatar className="h-7 w-7 md:h-8 md:w-8 mr-2 mt-1">
                         <AvatarImage 
                           src={conversations.find(c => c.id === selectedConversation)?.avatar}
                           alt="User"
                         />
                         <AvatarFallback>U</AvatarFallback>
                       </Avatar>
-                      <div className="bg-gray-100 rounded-2xl px-4 py-3 rounded-bl-none">
+                      <div className="bg-gray-100 rounded-2xl px-3 py-2 md:px-4 md:py-3 rounded-bl-none">
                         <div className="flex space-x-1">
                           <span className="h-2 w-2 bg-gray-400 rounded-full animate-pulse"></span>
                           <span className="h-2 w-2 bg-gray-400 rounded-full animate-pulse delay-75"></span>
@@ -369,17 +370,17 @@ const Messages = () => {
                 </div>
                 
                 {/* Input */}
-                <div className="p-4 border-t">
+                <div className="p-3 md:p-4 border-t">
                   <div className="flex items-center">
                     <Input 
                       placeholder="Type a message..." 
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      className="flex-1 border-primary/20 focus:border-primary rounded-full"
+                      className="flex-1 border-primary/20 focus:border-primary rounded-full text-sm"
                     />
                     <Button 
-                      className="ml-2 bg-primary hover:bg-primary/90 text-white rounded-full h-10 w-10 p-0" 
+                      className="ml-2 bg-primary hover:bg-primary/90 text-white rounded-full h-9 w-9 p-0" 
                       onClick={handleSendMessage}
                       disabled={!newMessage.trim()}
                     >
@@ -391,11 +392,11 @@ const Messages = () => {
               </>
             ) : (
               <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4 animate-bounce-subtle">
-                  <MessageSquare className="h-10 w-10 text-primary" />
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4 animate-bounce-subtle">
+                  <MessageSquare className="h-8 w-8 md:h-10 md:w-10 text-primary" />
                 </div>
-                <h3 className="text-lg font-medium mb-1 text-primary">No conversation selected</h3>
-                <p className="text-gray-500">Select a conversation to view messages</p>
+                <h3 className="text-base md:text-lg font-medium mb-1 text-primary">No conversation selected</h3>
+                <p className="text-sm text-gray-500">Select a conversation to view messages</p>
               </div>
             )}
           </div>

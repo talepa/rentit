@@ -3,12 +3,28 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext 
+} from "@/components/ui/carousel";
 
 interface CategoryCardProps {
   id: string;
   name: string;
   icon: string;
   color: string;
+}
+
+interface CategoryCarouselProps {
+  categories: {
+    id: string;
+    name: string;
+    icon: string;
+    color: string;
+  }[];
 }
 
 const CategoryCard = ({ id, name, icon, color }: CategoryCardProps) => {
@@ -73,6 +89,42 @@ const CategoryCard = ({ id, name, icon, color }: CategoryCardProps) => {
         </span>
       </motion.div>
     </Link>
+  );
+};
+
+export const CategoryCarousel = ({ categories }: CategoryCarouselProps) => {
+  const isMobile = useIsMobile();
+
+  return (
+    <Carousel
+      className="w-full"
+      opts={{
+        align: "start",
+        loop: true,
+      }}
+    >
+      <CarouselContent className="-ml-2 md:-ml-4">
+        {categories.map((category) => (
+          <CarouselItem 
+            key={category.id} 
+            className={`pl-2 md:pl-4 ${isMobile ? 'basis-1/3' : 'basis-1/6'}`}
+          >
+            <CategoryCard 
+              id={category.id}
+              name={category.name}
+              icon={category.icon}
+              color={category.color}
+            />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious 
+        className="left-0 bg-white/80 hover:bg-white" 
+      />
+      <CarouselNext 
+        className="right-0 bg-white/80 hover:bg-white" 
+      />
+    </Carousel>
   );
 };
 
