@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Navbar from '@/components/Navbar';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { MessageSquare, Send, Search, MoreVertical, Phone, Video, ArrowLeft } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { motion } from 'framer-motion';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -183,15 +183,36 @@ const Messages = () => {
     setShowMobileChat(false);
   };
 
+  const sidebarVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 100 } }
+  };
+
+  const chatVariants = {
+    hidden: { opacity: 0, x: 20 },
+    visible: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 100 } }
+  };
+
   return (
-    <div className="min-h-screen bg-appbg">
+    <div className="min-h-screen bg-appbg flex flex-col">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-primary mb-4 md:mb-6 animate-fade-in">Messages</h1>
+      <div className="flex-grow container mx-auto px-4 py-6 sm:px-6 lg:px-8 flex flex-col">
+        <motion.h1 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-2xl md:text-3xl font-bold text-primary mb-4 md:mb-6"
+        >
+          Messages
+        </motion.h1>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 flex-grow">
           {/* Conversations sidebar - show on desktop or when not in chat view on mobile */}
-          <div className={`md:col-span-1 bg-white rounded-lg shadow-md overflow-hidden ${showMobileChat ? 'hidden md:block' : 'block'} animate-slide-up-fade`}>
+          <motion.div 
+            className={`md:col-span-1 bg-white rounded-lg shadow-md overflow-hidden ${showMobileChat ? 'hidden md:block' : 'block'}`}
+            variants={sidebarVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <div className="p-3 md:p-4 border-b bg-primary/5">
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-primary" />
@@ -203,7 +224,7 @@ const Messages = () => {
                 />
               </div>
             </div>
-            <div className="overflow-y-auto max-h-[calc(100vh-15rem)]">
+            <div className="overflow-y-auto max-h-[calc(100vh-13rem)] md:max-h-[calc(100vh-15rem)]">
               {filteredConversations.length > 0 ? (
                 filteredConversations.map(conversation => (
                   <div 
@@ -226,7 +247,7 @@ const Messages = () => {
                       </div>
                       <div className="ml-3 md:ml-4 flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <h3 className={`text-sm font-medium truncate ${selectedConversation === conversation.id ? 'text-primary' : ''} transition-colors`}>
+                          <h3 className={`text-sm font-medium truncate ${selectedConversation === conversation.id ? 'text-primary' : ''}`}>
                             {conversation.user}
                           </h3>
                           <span className="text-xs text-gray-500 whitespace-nowrap ml-1">{conversation.time}</span>
@@ -246,16 +267,21 @@ const Messages = () => {
                   </div>
                 ))
               ) : (
-                <div className="p-8 text-center text-gray-500 animate-fade-in">
+                <div className="p-8 text-center text-gray-500">
                   <MessageSquare className="h-12 w-12 mx-auto text-gray-300 mb-3" />
                   <p>No conversations found</p>
                 </div>
               )}
             </div>
-          </div>
+          </motion.div>
           
           {/* Message content - show on desktop or when in chat view on mobile */}
-          <div className={`md:col-span-2 bg-white rounded-lg shadow-md flex flex-col h-[calc(100vh-13rem)] md:h-[calc(100vh-15rem)] ${showMobileChat ? 'block' : 'hidden md:flex'} animate-slide-up-fade`}>
+          <motion.div 
+            className={`md:col-span-2 bg-white rounded-lg shadow-md flex flex-col h-[calc(100vh-13rem)] md:h-[calc(100vh-15rem)] ${showMobileChat ? 'block' : 'hidden md:flex'}`}
+            variants={chatVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {selectedConversation ? (
               <>
                 {/* Header */}
@@ -289,10 +315,10 @@ const Messages = () => {
                     </div>
                   </div>
                   <div className="flex space-x-1 md:space-x-2">
-                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10 h-8 w-8">
+                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10 h-8 w-8 hidden md:flex">
                       <Phone className="h-4 w-4 text-primary" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10 h-8 w-8">
+                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10 h-8 w-8 hidden md:flex">
                       <Video className="h-4 w-4 text-primary" />
                     </Button>
                     <DropdownMenu>
@@ -303,6 +329,8 @@ const Messages = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>View profile</DropdownMenuItem>
+                        <DropdownMenuItem>Call</DropdownMenuItem>
+                        <DropdownMenuItem>Video call</DropdownMenuItem>
                         <DropdownMenuItem>Block user</DropdownMenuItem>
                         <DropdownMenuItem>Delete conversation</DropdownMenuItem>
                       </DropdownMenuContent>
@@ -321,7 +349,7 @@ const Messages = () => {
                   {messages.map(message => (
                     <div 
                       key={message.id}
-                      className={`flex ${message.isMe ? 'justify-end' : 'justify-start'} animate-fade-in`}
+                      className={`flex ${message.isMe ? 'justify-end' : 'justify-start'}`}
                     >
                       {!message.isMe && (
                         <Avatar className="h-7 w-7 md:h-8 md:w-8 mr-2 mt-1">
@@ -332,10 +360,12 @@ const Messages = () => {
                           <AvatarFallback>{message.sender[0]}</AvatarFallback>
                         </Avatar>
                       )}
-                      <div 
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
                         className={`max-w-[80%] rounded-2xl px-3 py-2 md:px-4 md:py-2 ${
                           message.isMe 
-                            ? 'bg-primary text-white rounded-br-none animate-slide-in-right' 
+                            ? 'bg-primary text-white rounded-br-none' 
                             : 'bg-gray-100 rounded-bl-none'
                         }`}
                       >
@@ -343,7 +373,7 @@ const Messages = () => {
                         <p className={`text-xs mt-1 text-right ${message.isMe ? 'text-primary-foreground/80' : 'text-gray-500'}`}>
                           {formatMessageTime(message.time)}
                         </p>
-                      </div>
+                      </motion.div>
                     </div>
                   ))}
                   
@@ -356,13 +386,17 @@ const Messages = () => {
                         />
                         <AvatarFallback>U</AvatarFallback>
                       </Avatar>
-                      <div className="bg-gray-100 rounded-2xl px-3 py-2 md:px-4 md:py-3 rounded-bl-none">
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="bg-gray-100 rounded-2xl px-3 py-2 md:px-4 md:py-3 rounded-bl-none"
+                      >
                         <div className="flex space-x-1">
                           <span className="h-2 w-2 bg-gray-400 rounded-full animate-pulse"></span>
                           <span className="h-2 w-2 bg-gray-400 rounded-full animate-pulse delay-75"></span>
                           <span className="h-2 w-2 bg-gray-400 rounded-full animate-pulse delay-150"></span>
                         </div>
-                      </div>
+                      </motion.div>
                     </div>
                   )}
                   
@@ -392,14 +426,21 @@ const Messages = () => {
               </>
             ) : (
               <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4 animate-bounce-subtle">
-                  <MessageSquare className="h-8 w-8 md:h-10 md:w-10 text-primary" />
-                </div>
-                <h3 className="text-base md:text-lg font-medium mb-1 text-primary">No conversation selected</h3>
-                <p className="text-sm text-gray-500">Select a conversation to view messages</p>
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 100 }}
+                  className="text-center"
+                >
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <MessageSquare className="h-8 w-8 md:h-10 md:w-10 text-primary" />
+                  </div>
+                  <h3 className="text-base md:text-lg font-medium mb-1 text-primary">No conversation selected</h3>
+                  <p className="text-sm text-gray-500">Select a conversation to view messages</p>
+                </motion.div>
               </div>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

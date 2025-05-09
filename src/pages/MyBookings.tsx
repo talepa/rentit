@@ -1,9 +1,18 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { MessageSquare } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { MessageSquare, Calendar, X, Check, Clock, Star, Filter, ArrowUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from '@/components/ui/badge';
+import { motion } from 'framer-motion';
 
 const DEMO_BOOKINGS = [
   {
@@ -14,7 +23,9 @@ const DEMO_BOOKINGS = [
     endDate: "2024-04-27",
     status: "active",
     price: 50,
-    image: "/placeholder.svg"
+    deposit: 200,
+    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1000&auto=format&fit=crop",
+    rating: 4.8,
   },
   {
     id: 2,
@@ -24,55 +35,276 @@ const DEMO_BOOKINGS = [
     endDate: "2024-05-03",
     status: "pending",
     price: 30,
-    image: "/placeholder.svg"
+    deposit: 150,
+    image: "https://images.unsplash.com/photo-1596496050827-8299e0220de1?q=80&w=1000&auto=format&fit=crop",
+    rating: 4.5,
+  },
+  {
+    id: 3,
+    productName: "Drone",
+    owner: "Mike Johnson",
+    startDate: "2024-05-10",
+    endDate: "2024-05-12",
+    status: "completed",
+    price: 80,
+    deposit: 300,
+    image: "https://images.unsplash.com/photo-1579829366248-204fe8413f31?q=80&w=1000&auto=format&fit=crop",
+    rating: 5.0,
+  },
+  {
+    id: 4,
+    productName: "Tent",
+    owner: "Sarah Williams",
+    startDate: "2024-06-15",
+    endDate: "2024-06-17",
+    status: "cancelled",
+    price: 25,
+    deposit: 75,
+    image: "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?q=80&w=1000&auto=format&fit=crop",
+    rating: 0,
   }
 ];
 
+type BookingStatus = "active" | "pending" | "completed" | "cancelled";
+
 const MyBookings = () => {
+  const [filter, setFilter] = useState<BookingStatus | 'all'>('all');
+  const [sortBy, setSortBy] = useState<'date' | 'price'>('date');
+
+  const filteredBookings = DEMO_BOOKINGS.filter(booking => 
+    filter === 'all' ? true : booking.status === filter
+  );
+
+  const sortedBookings = [...filteredBookings].sort((a, b) => {
+    if (sortBy === 'date') {
+      return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    } else {
+      return b.price - a.price;
+    }
+  });
+
+  const getStatusColor = (status: BookingStatus) => {
+    switch (status) {
+      case 'active': return 'bg-green-500 text-white';
+      case 'pending': return 'bg-yellow-500 text-white';
+      case 'completed': return 'bg-blue-500 text-white';
+      case 'cancelled': return 'bg-red-500 text-white';
+      default: return 'bg-gray-500 text-white';
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-appbg">
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-textdark mb-6 relative inline-block">
-          My Bookings
-          <div className="absolute -bottom-1 left-0 h-3 w-1/2 bg-primary/10 rounded-full -z-[1] group-hover:w-full transition-all duration-500"></div>
-        </h1>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {DEMO_BOOKINGS.map((booking, index) => (
-            <Card key={booking.id} className="transform transition-all duration-300 hover:shadow-lg hover:scale-[1.02] animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
-              <CardHeader>
-                <CardTitle className="text-lg relative group">
-                  <span className="relative z-10">{booking.productName}</span>
-                  <div className="absolute -bottom-1 left-0 h-2 w-0 bg-primary/10 rounded-full -z-0 group-hover:w-full transition-all duration-500"></div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="relative overflow-hidden rounded-md">
-                  <img
-                    src={booking.image}
-                    alt={booking.productName}
-                    className="w-full h-48 object-cover rounded-md mb-4 transform transition-all duration-500 hover:scale-110"
-                  />
-                  <span className={`absolute top-2 right-2 px-2 py-1 rounded text-sm ${
-                    booking.status === 'active' ? 'bg-green-500' : 'bg-yellow-500'
-                  } text-white transform transition-all duration-300 hover:scale-105`}>
-                    {booking.status}
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600">From: <span className="font-medium">{booking.startDate}</span></p>
-                  <p className="text-sm text-gray-600">To: <span className="font-medium">{booking.endDate}</span></p>
-                  <p className="text-sm text-gray-600">Owner: <span className="font-medium">{booking.owner}</span></p>
-                  <p className="font-semibold">${booking.price}/day</p>
-                  <Button variant="outline" className="w-full mt-4 group" onClick={() => console.log("Message sent")}>
-                    <MessageSquare className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
-                    <span>Message Owner</span>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4"
+        >
+          <div>
+            <h1 className="text-3xl font-bold text-textdark mb-2 relative inline-block">
+              My Bookings
+              <div className="absolute -bottom-1 left-0 h-3 w-1/2 bg-primary/10 rounded-full -z-[1]"></div>
+            </h1>
+            <p className="text-gray-600">Manage all your rental bookings in one place</p>
+          </div>
+          
+          <div className="flex space-x-2 self-end md:self-auto">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="flex items-center">
+                  <Filter className="h-4 w-4 mr-2" />
+                  <span>Filter</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setFilter('all')} className={filter === 'all' ? 'bg-accent/20' : ''}>
+                  All Bookings
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilter('active')} className={filter === 'active' ? 'bg-accent/20' : ''}>
+                  Active
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilter('pending')} className={filter === 'pending' ? 'bg-accent/20' : ''}>
+                  Pending
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilter('completed')} className={filter === 'completed' ? 'bg-accent/20' : ''}>
+                  Completed
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilter('cancelled')} className={filter === 'cancelled' ? 'bg-accent/20' : ''}>
+                  Cancelled
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="flex items-center">
+                  <ArrowUpDown className="h-4 w-4 mr-2" />
+                  <span>Sort</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setSortBy('date')} className={sortBy === 'date' ? 'bg-accent/20' : ''}>
+                  By Date
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSortBy('price')} className={sortBy === 'price' ? 'bg-accent/20' : ''}>
+                  By Price (High to Low)
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </motion.div>
+        
+        {sortedBookings.length > 0 ? (
+          <motion.div 
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {sortedBookings.map((booking, index) => (
+              <motion.div 
+                key={booking.id} 
+                variants={itemVariants}
+                className="h-full"
+              >
+                <Card className="h-full flex flex-col transform transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px] animate-fade-in">
+                  <CardHeader className="pb-3">
+                    <div className="flex justify-between items-start">
+                      <CardTitle className="text-lg font-medium line-clamp-1">{booking.productName}</CardTitle>
+                      <Badge className={`${getStatusColor(booking.status as BookingStatus)} capitalize`}>
+                        {booking.status}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pb-4 flex-grow">
+                    <div className="relative mb-3 rounded-md overflow-hidden h-48">
+                      <img
+                        src={booking.image}
+                        alt={booking.productName}
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                      />
+                      {booking.rating > 0 && (
+                        <div className="absolute top-2 right-2 bg-black/70 text-white text-xs rounded-full px-2 py-1 flex items-center">
+                          <Star className="h-3 w-3 mr-1 text-yellow-400 fill-yellow-400" />
+                          <span>{booking.rating}</span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <div className="flex items-center text-sm">
+                        <Calendar className="h-4 w-4 mr-2 text-gray-400" />
+                        <div>
+                          <p className="font-medium">{formatDate(booking.startDate)} - {formatDate(booking.endDate)}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-between">
+                        <div className="text-sm text-gray-600">
+                          <span className="block">From: <span className="font-medium">{booking.owner}</span></span>
+                        </div>
+                        <div className="text-right">
+                          <span className="font-semibold text-primary">${booking.price}/day</span>
+                          <p className="text-xs text-gray-500">Deposit: ${booking.deposit}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="pt-0 flex justify-between border-t p-4 bg-gray-50">
+                    {booking.status === 'pending' && (
+                      <>
+                        <Button size="sm" variant="outline" className="text-red-500 border-red-500 hover:bg-red-50">
+                          <X className="h-4 w-4 mr-1" /> Cancel
+                        </Button>
+                        <Button size="sm" className="bg-primary hover:bg-primary/90">
+                          <Check className="h-4 w-4 mr-1" /> Confirm
+                        </Button>
+                      </>
+                    )}
+                    
+                    {booking.status === 'active' && (
+                      <>
+                        <Button size="sm" variant="outline" className="text-red-500 border-red-500 hover:bg-red-50">
+                          <X className="h-4 w-4 mr-1" /> Cancel
+                        </Button>
+                        <Button size="sm" className="bg-primary hover:bg-primary/90">
+                          <MessageSquare className="h-4 w-4 mr-1" /> Message
+                        </Button>
+                      </>
+                    )}
+                    
+                    {booking.status === 'completed' && (
+                      <>
+                        <Button size="sm" variant="outline">
+                          <Clock className="h-4 w-4 mr-1" /> Book Again
+                        </Button>
+                        {booking.rating === 0 ? (
+                          <Button size="sm" className="bg-yellow-500 hover:bg-yellow-600">
+                            <Star className="h-4 w-4 mr-1" /> Rate
+                          </Button>
+                        ) : (
+                          <Button size="sm" variant="outline" disabled className="opacity-50">
+                            Rated
+                          </Button>
+                        )}
+                      </>
+                    )}
+                    
+                    {booking.status === 'cancelled' && (
+                      <Button size="sm" className="bg-primary hover:bg-primary/90 ml-auto">
+                        <Clock className="h-4 w-4 mr-1" /> Book Again
+                      </Button>
+                    )}
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        ) : (
+          <div className="text-center py-20 bg-white rounded-lg shadow-sm">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }} 
+              animate={{ opacity: 1, scale: 1 }}
+              className="max-w-sm mx-auto"
+            >
+              <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+                <Calendar className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-medium mb-2">No bookings found</h3>
+              <p className="text-gray-500 mb-6">You don't have any bookings matching the selected filter.</p>
+              <Button onClick={() => setFilter('all')}>Show All Bookings</Button>
+            </motion.div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -119,14 +119,12 @@ export const CategoryCarousel = ({ categories }: CategoryCarouselProps) => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious 
-        className="left-0 bg-white/80 hover:bg-white flex items-center justify-center"
-        icon={<ChevronLeft className="h-4 w-4" />}
-      />
-      <CarouselNext 
-        className="right-0 bg-white/80 hover:bg-white flex items-center justify-center"
-        icon={<ChevronRight className="h-4 w-4" />}
-      />
+      <CarouselPrevious>
+        <ChevronLeft className="h-4 w-4" />
+      </CarouselPrevious>
+      <CarouselNext>
+        <ChevronRight className="h-4 w-4" />
+      </CarouselNext>
     </Carousel>
   );
 };
