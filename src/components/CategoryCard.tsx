@@ -10,6 +10,7 @@ import {
   CarouselPrevious,
   CarouselNext 
 } from "@/components/ui/carousel";
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 
 interface CategoryCardProps {
   id: string;
@@ -119,10 +120,12 @@ export const CategoryCarousel = ({ categories }: CategoryCarouselProps) => {
         ))}
       </CarouselContent>
       <CarouselPrevious 
-        className="left-0 bg-white/80 hover:bg-white" 
+        className="left-0 bg-white/80 hover:bg-white flex items-center justify-center"
+        icon={<ChevronLeft className="h-4 w-4" />}
       />
       <CarouselNext 
-        className="right-0 bg-white/80 hover:bg-white" 
+        className="right-0 bg-white/80 hover:bg-white flex items-center justify-center"
+        icon={<ChevronRight className="h-4 w-4" />}
       />
     </Carousel>
   );
