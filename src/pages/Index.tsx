@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
@@ -325,7 +324,7 @@ const Index = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             >
-              Welcome to <span className="text-accent font-bold">Rentit</span>
+              Welcome to <span className="text-[#0FA0CE] font-bold">Rentit</span>
             </motion.h1>
             
             <motion.p 
@@ -334,7 +333,7 @@ const Index = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             >
-              The easiest way to rent items and services from people around you
+              Don't buy, just Rentit
             </motion.p>
             
             <motion.div
@@ -672,221 +671,4 @@ const Index = () => {
           </h2>
           <Button 
             variant="ghost" 
-            className="text-[#053e5d] hover:text-[#0a2247] hover:bg-[#9bd5e9]/10"
-            onClick={() => navigate('/categories?featured=true')}
-          >
-            View All
-            <ArrowRight className="ml-1 h-4 w-4" />
-          </Button>
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <FeatureSection 
-            title="" 
-            viewAllLink="/categories/products"
-            items={featuredProducts}
-          />
-        </motion.div>
-      </div>
-      
-      {/* App Download Section */}
-      <div className="bg-gradient-to-br from-[#9bd5e9]/20 to-[#053e5d]/5 py-16 relative overflow-hidden">
-        <AnimatedWave 
-          position="top" 
-          fill="#053e5d" 
-          opacity={0.05} 
-          animationDuration={30} 
-        />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <motion.div 
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <h2 className="text-3xl font-bold text-[#053e5d] mb-4 relative">
-                Download the Rentit App
-                <motion.span 
-                  className="absolute -bottom-1 left-0 w-16 h-0.5 bg-[#9bd5e9]"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-                />
-              </h2>
-              <p className="text-gray-600 mb-6">Get the best rental experience on your mobile device. Find items near you, chat with owners, and manage your rentals on the go.</p>
-              <div className="flex flex-wrap gap-4">
-                <motion.img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" 
-                  alt="App Store" 
-                  className="h-12"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                />
-                <motion.img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
-                  alt="Google Play" 
-                  className="h-12"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                />
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true, margin: "-100px" }}
-              className="relative"
-            >
-              <div className="rounded-2xl overflow-hidden shadow-lg border border-[#9bd5e9]/30">
-                <img 
-                  src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?auto=format&fit=crop&q=80&w=1000&h=600" 
-                  alt="App Screenshot" 
-                  className="w-full h-auto rounded-2xl"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#053e5d]/60 to-transparent rounded-2xl"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="text-white text-xl font-bold">Seamless Rental Experience</h3>
-                  <p className="text-white/80 text-sm mt-2">Find, book, and manage rentals all in one place</p>
-                </div>
-              </div>
-              <motion.div 
-                className="absolute -bottom-5 -right-5 h-24 w-24 bg-[#4f8391]/20 rounded-full blur-2xl"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  opacity: [0.5, 0.8, 0.5]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-              <motion.div 
-                className="absolute -top-5 -left-5 h-16 w-16 bg-[#053e5d]/20 rounded-full blur-xl"
-                animate={{ 
-                  scale: [1, 1.3, 1],
-                  opacity: [0.5, 0.7, 0.5]
-                }}
-                transition={{
-                  duration: 5,
-                  delay: 1,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-            </motion.div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Trust & Safety Section */}
-      <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-[#053e5d] mb-4 relative inline-block">
-            Your Trust & Safety is Our Priority
-            <motion.span 
-              className="absolute -bottom-1 left-0 right-0 h-0.5 mx-auto w-1/3 bg-[#9bd5e9]"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-            />
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">We're committed to making Rentit a safe and reliable platform for all users.</p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border border-[#9bd5e9]/20"
-          >
-            <div className="h-12 w-12 bg-[#053e5d]/10 rounded-full flex items-center justify-center mb-4">
-              <svg className="h-6 w-6 text-[#053e5d]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold mb-2 text-[#053e5d]">Verified Users</h3>
-            <p className="text-gray-600">All users undergo verification processes to ensure a trustworthy community.</p>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border border-[#9bd5e9]/20"
-          >
-            <div className="h-12 w-12 bg-[#4f8391]/10 rounded-full flex items-center justify-center mb-4">
-              <svg className="h-6 w-6 text-[#4f8391]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold mb-2 text-[#053e5d]">Secure Payments</h3>
-            <p className="text-gray-600">All transactions are processed securely and funds are only released when both parties are satisfied.</p>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border border-[#9bd5e9]/20"
-          >
-            <div className="h-12 w-12 bg-[#9bd5e9]/20 rounded-full flex items-center justify-center mb-4">
-              <svg className="h-6 w-6 text-[#9bd5e9]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold mb-2 text-[#053e5d]">Quality Guarantee</h3>
-            <p className="text-gray-600">All listings are reviewed to ensure they meet our quality standards before they go live.</p>
-          </motion.div>
-        </div>
-      </div>
-      
-      {/* CTA Section */}
-      <div className="bg-gradient-to-r from-[#053e5d] to-[#0a2247] text-white py-16 relative overflow-hidden">
-        <AnimatedWave 
-          fill="#9bd5e9" 
-          opacity={0.1} 
-          animationDuration={25} 
-        />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to start renting?</h2>
-          <p className="text-white/80 mb-8 max-w-xl mx-auto">Join thousands of users who are already earning and saving money through Rentit.</p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="bg-white text-[#053e5d] hover:bg-white/90 border-white"
-              onClick={() => navigate('/post-add')}
-            >
-              List an Item
-            </Button>
-            <Button 
-              size="lg" 
-              className="bg-white/20 hover:bg-white/30 text-white"
-              onClick={() => navigate('/categories')}
-            >
-              Browse Items
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Index;
+            className="text-[#053e5d] hover:text-[#0a2247] hover:bg-[#9bd5e9

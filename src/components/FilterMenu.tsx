@@ -1,11 +1,15 @@
 
 import React, { useState } from 'react';
-import { Filter, ChevronDown, Check, X } from 'lucide-react';
+import { Filter, ChevronDown, Check, X, MapPin, Calendar, Tag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { format } from 'date-fns';
 
 interface FilterOption {
   id: string;
@@ -19,13 +23,39 @@ interface FilterMenuProps {
 
 const FilterMenu: React.FC<FilterMenuProps> = ({ onFilter }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [location, setLocation] = useState('');
+  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [category, setCategory] = useState<string | null>(null);
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [distance, setDistance] = useState(10);
   const [rating, setRating] = useState(0);
   const [sortBy, setSortBy] = useState('relevance');
   
+  const categories = [{
+    id: 'electronics',
+    name: 'Electronics'
+  }, {
+    id: 'vehicles',
+    name: 'Vehicles'
+  }, {
+    id: 'clothing',
+    name: 'Clothing'
+  }, {
+    id: 'tools',
+    name: 'Tools'
+  }, {
+    id: 'homestays',
+    name: 'Home Stays'
+  }, {
+    id: 'sports',
+    name: 'Sports'
+  }, {
+    id: 'events',
+    name: 'Events'
+  }];
+  
   // Different filter categories
-  const [categories, setCategories] = useState<FilterOption[]>([
+  const [categoryFilters, setCategoryFilters] = useState<FilterOption[]>([
     { id: 'electronics', label: 'Electronics', checked: false },
     { id: 'vehicles', label: 'Vehicles', checked: false },
     { id: 'clothing', label: 'Clothing', checked: false },
@@ -54,7 +84,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ onFilter }) => {
   };
 
   const handleCategoryChange = (id: string) => {
-    setCategories(categories.map(category => 
+    setCategoryFilters(categoryFilters.map(category => 
       category.id === id ? { ...category, checked: !category.checked } : category
     ));
   };
@@ -87,13 +117,20 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ onFilter }) => {
     setSortBy(value);
   };
 
+  const handleCategorySelect = (categoryId: string) => {
+    setCategory(categoryId);
+  };
+
   const applyFilters = () => {
     const filters = {
+      location,
+      date: date ? format(date, 'yyyy-MM-dd') : undefined,
+      category,
       priceRange,
       distance,
       rating,
       sortBy,
-      categories: categories.filter(c => c.checked).map(c => c.id),
+      categories: categoryFilters.filter(c => c.checked).map(c => c.id),
       availability: availability.filter(a => a.checked).map(a => a.id),
       verification: verification.filter(v => v.checked).map(v => v.id),
     };
@@ -103,29 +140,36 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ onFilter }) => {
   };
 
   const resetFilters = () => {
+    setLocation('');
+    setDate(undefined);
+    setCategory(null);
     setPriceRange([0, 1000]);
     setDistance(10);
     setRating(0);
     setSortBy('relevance');
-    setCategories(categories.map(c => ({ ...c, checked: false })));
+    setCategoryFilters(categoryFilters.map(c => ({ ...c, checked: false })));
     setAvailability(availability.map(a => ({ ...a, checked: false })));
     setVerification(verification.map(v => ({ ...v, checked: false })));
   };
 
   const countActiveFilters = () => {
-    return categories.filter(c => c.checked).length + 
-           availability.filter(a => a.checked).length + 
-           verification.filter(v => v.checked).length +
-           (rating > 0 ? 1 : 0) +
-           (distance < 10 ? 1 : 0) +
-           (priceRange[0] > 0 || priceRange[1] < 1000 ? 1 : 0);
+    let count = 0;
+    if (location) count++;
+    if (date) count++;
+    if (category) count++;
+    if (categoryFilters.some(c => c.checked)) count++;
+    if (availability.some(a => a.checked)) count++;
+    if (verification.some(v => v.checked)) count++;
+    if (rating > 0) count++;
+    if (distance < 10) count++;
+    if (priceRange[0] > 0 || priceRange[1] < 1000) count++;
+    return count;
   };
 
   return (
     <div className="relative">
       <Button
         variant="outline"
-        size="sm"
         onClick={toggleFilter}
         className="flex items-center gap-2 bg-white border-[#9bd5e9] hover:bg-[#9bd5e9]/10"
       >
@@ -155,6 +199,70 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ onFilter }) => {
             </div>
 
             <div className="max-h-[70vh] overflow-y-auto p-4">
+              {/* Location Input */}
+              <div className="mb-5">
+                <h4 className="text-sm font-medium mb-2 flex items-center">
+                  <MapPin className="h-4 w-4 mr-1 text-[#053e5d]" />
+                  <span>Location</span>
+                </h4>
+                <Input 
+                  type="text" 
+                  placeholder="Enter your location" 
+                  value={location} 
+                  onChange={(e) => setLocation(e.target.value)}
+                  className="border-[#9bd5e9] focus:border-[#053e5d]"
+                />
+              </div>
+              
+              {/* Date Picker */}
+              <div className="mb-5">
+                <h4 className="text-sm font-medium mb-2 flex items-center">
+                  <Calendar className="h-4 w-4 mr-1 text-[#053e5d]" />
+                  <span>Date</span>
+                </h4>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className={`w-full justify-start text-left font-normal border-[#9bd5e9] hover:bg-[#9bd5e9]/10 ${!date ? 'text-gray-500' : 'text-[#053e5d]'}`}>
+                      <Calendar className="mr-2 h-4 w-4 text-[#053e5d]" />
+                      {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <CalendarComponent mode="single" selected={date} onSelect={setDate} initialFocus />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              
+              {/* Category Selection */}
+              <div className="mb-5">
+                <h4 className="text-sm font-medium mb-2 flex items-center">
+                  <Tag className="h-4 w-4 mr-1 text-[#053e5d]" />
+                  <span>Category</span>
+                </h4>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className={`w-full justify-start text-left font-normal border-[#9bd5e9] hover:bg-[#9bd5e9]/10 ${!category ? 'text-gray-500' : 'text-[#053e5d]'}`}>
+                      <Tag className="mr-2 h-4 w-4 text-[#053e5d]" />
+                      {category ? categories.find(c => c.id === category)?.name : <span>Select category</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-48 p-0" align="start">
+                    <div className="p-2">
+                      {categories.map(cat => (
+                        <Button 
+                          key={cat.id} 
+                          variant="ghost" 
+                          className="w-full justify-start text-left font-normal hover:bg-[#9bd5e9]/10 hover:text-[#053e5d]" 
+                          onClick={() => handleCategorySelect(cat.id)}
+                        >
+                          {cat.name}
+                        </Button>
+                      ))}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
               {/* Price Range */}
               <div className="mb-5">
                 <h4 className="text-sm font-medium mb-2 flex justify-between">
@@ -212,7 +320,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ onFilter }) => {
                       variant={sortBy === sort ? "default" : "outline"}
                       size="sm"
                       onClick={() => handleSortChange(sort)}
-                      className={sortBy === sort ? "bg-[#053e5d] hover:bg-[#053e5d]/90" : "border-[#9bd5e9] text-[#053e5d] hover:bg-[#9bd5e9]/10"}
+                      className={sortBy === sort ? "bg-[#053e5d] hover:bg-[#053e5d]/90 text-white" : "border-[#9bd5e9] text-[#053e5d] hover:bg-[#9bd5e9]/10"}
                     >
                       {sort === 'relevance' && 'Relevance'}
                       {sort === 'price-low' && 'Price: Low-High'}
@@ -227,9 +335,9 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ onFilter }) => {
 
               {/* Categories */}
               <div className="mb-5">
-                <h4 className="text-sm font-medium mb-2">Categories</h4>
+                <h4 className="text-sm font-medium mb-2">Multiple Categories</h4>
                 <div className="grid grid-cols-2 gap-y-2">
-                  {categories.map((category) => (
+                  {categoryFilters.map((category) => (
                     <div key={category.id} className="flex items-center space-x-2">
                       <Checkbox 
                         id={category.id} 
@@ -288,7 +396,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ onFilter }) => {
               <Button 
                 onClick={applyFilters}
                 size="sm"
-                className="bg-[#053e5d] hover:bg-[#0a2247]"
+                className="bg-[#053e5d] hover:bg-[#0a2247] text-white"
               >
                 Apply Filters
               </Button>
