@@ -10,15 +10,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md after:content-[''] after:absolute after:h-full after:w-8 after:bg-white/20 after:top-0 after:-left-[60px] after:skew-x-30 after:transition-all hover:after:translate-x-[300px] after:duration-1000",
+        default: "bg-[#053e5d] text-white hover:bg-[#0a2247] shadow-sm hover:shadow-md after:content-[''] after:absolute after:h-full after:w-8 after:bg-white/20 after:top-0 after:-left-[60px] after:skew-x-30 after:transition-all hover:after:translate-x-[300px] after:duration-1000",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm hover:shadow-md",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-accent relative after:content-[''] after:absolute after:h-0 after:w-full after:bg-accent/10 after:left-0 after:bottom-0 after:transition-all hover:after:h-full after:z-[-1]",
+          "border border-[#9bd5e9] bg-transparent hover:bg-[#9bd5e9]/20 hover:text-[#053e5d] hover:border-[#053e5d] relative after:content-[''] after:absolute after:h-0 after:w-full after:bg-[#9bd5e9]/10 after:left-0 after:bottom-0 after:transition-all hover:after:h-full after:z-[-1]",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm hover:shadow-md after:content-[''] after:absolute after:h-full after:w-8 after:bg-white/20 after:top-0 after:-left-[60px] after:skew-x-30 after:transition-all hover:after:translate-x-[300px] after:duration-1000",
-        ghost: "hover:bg-accent/10 hover:text-accent-foreground relative after:content-[''] after:absolute after:h-0 after:w-full after:bg-accent/10 after:left-0 after:bottom-0 after:transition-all hover:after:h-full after:z-[-1]",
-        link: "text-primary underline-offset-4 hover:underline relative after:content-[''] after:absolute after:h-0.5 after:w-0 after:bg-primary after:left-0 after:bottom-0 after:transition-all hover:after:w-full",
+          "bg-[#4f8391] text-white hover:bg-[#4f8391]/80 shadow-sm hover:shadow-md after:content-[''] after:absolute after:h-full after:w-8 after:bg-white/20 after:top-0 after:-left-[60px] after:skew-x-30 after:transition-all hover:after:translate-x-[300px] after:duration-1000",
+        ghost: "hover:bg-[#9bd5e9]/20 hover:text-[#053e5d] relative after:content-[''] after:absolute after:h-0 after:w-full after:bg-[#9bd5e9]/20 after:left-0 after:bottom-0 after:transition-all hover:after:h-full after:z-[-1]",
+        link: "text-[#053e5d] underline-offset-4 hover:underline relative after:content-[''] after:absolute after:h-0.5 after:w-0 after:bg-[#053e5d] after:left-0 after:bottom-0 after:transition-all hover:after:w-full",
       },
       size: {
         default: "h-10 px-4 py-2",

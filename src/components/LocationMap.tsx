@@ -59,15 +59,12 @@ const LocationMap = ({
     if (searchInputRef.current && window.google?.maps?.places) {
       const searchBox = new google.maps.places.SearchBox(searchInputRef.current);
       
-      // FIX: Instead of directly using the input as controls, we create a container
-      // and properly add it to the map controls
-      if (searchInputRef.current) {
-        const searchBoxContainer = document.createElement('div');
-        searchBoxContainer.appendChild(searchInputRef.current);
-        
-        // Position the search box in the top center of the map
-        mapInstance.controls[google.maps.ControlPosition.TOP_CENTER].push(searchBoxContainer);
-      }
+      // Fix: Create a container div and properly add it to the controls
+      const searchBoxContainer = document.createElement('div');
+      searchBoxContainer.appendChild(searchInputRef.current.cloneNode(true));
+      
+      // Use controls array for proper type checking
+      mapInstance.controls[google.maps.ControlPosition.TOP_CENTER].push(searchBoxContainer as unknown as google.maps.MVCObject);
 
       searchBox.addListener('places_changed', () => {
         const places = searchBox.getPlaces();
@@ -107,31 +104,32 @@ const LocationMap = ({
         variant="outline" 
         size="sm" 
         onClick={toggleExpanded}
-        className="flex items-center gap-2 bg-white"
+        className="flex items-center gap-2 bg-[#9bd5e9] hover:bg-[#4f8391] text-[#01030d] hover:text-white border-[#053e5d]"
       >
         <Search className="h-4 w-4" />
         <span>Location</span>
       </Button>
       
       {isExpanded && (
-        <div className="absolute z-50 top-full mt-2 w-72 bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="p-3 border-b">
+        <div className="absolute z-50 top-full mt-2 w-72 bg-white rounded-lg shadow-lg overflow-hidden border border-[#053e5d]">
+          <div className="p-3 border-b border-[#9bd5e9]">
             <input
               ref={searchInputRef}
               type="text"
               placeholder="Search for a location..."
-              className="w-full px-3 py-2 border rounded-md text-sm"
+              className="w-full px-3 py-2 border border-[#9bd5e9] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#053e5d]"
             />
           </div>
           <div 
             ref={mapRef} 
             className="w-full h-48"
           />
-          <div className="p-3 flex justify-between">
+          <div className="p-3 flex justify-between bg-[#f8fafc]">
             <Button 
               variant="outline" 
               size="sm" 
               onClick={toggleExpanded}
+              className="border-[#053e5d] text-[#053e5d] hover:bg-[#053e5d] hover:text-white"
             >
               Cancel
             </Button>
@@ -143,6 +141,7 @@ const LocationMap = ({
                 }
                 toggleExpanded();
               }}
+              className="bg-[#053e5d] hover:bg-[#0a2247] text-white"
             >
               Confirm Location
             </Button>

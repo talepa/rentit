@@ -24,42 +24,50 @@ export default {
         'inter': ['Inter', 'sans-serif'],
       },
       colors: {
-        border: '#D8E2EF', // Lighter border
-        input: '#D8E2EF',
-        ring: '#3B82F6', // Updated primary blue
-        background: '#F8FAFC', // Lighter background
-        foreground: '#1E293B', // Darker text for better contrast
+        border: '#9bd5e9', // Light blue from palette
+        input: '#9bd5e9',
+        ring: '#053e5d', // Medium dark blue from palette
+        background: '#f8fafc', // Light background
+        foreground: '#01030d', // Darkest color from palette for text
         primary: {
-          DEFAULT: '#3B82F6', // More vibrant blue for rental context
+          DEFAULT: '#053e5d', // Medium dark blue from palette
           foreground: '#FFFFFF', // Text (Light)
         },
         secondary: {
-          DEFAULT: '#F97316', // Warmer orange for rental context
+          DEFAULT: '#4f8391', // Medium blue from palette
           foreground: '#FFFFFF',
         },
         accent: {
-          DEFAULT: '#10B981', // Fresh teal-green
-          foreground: '#FFFFFF',
+          DEFAULT: '#9bd5e9', // Light blue from palette
+          foreground: '#01030d', // Dark text
         },
         muted: {
-          DEFAULT: '#F1F5F9',
-          foreground: '#64748B',
+          DEFAULT: '#e2e8f0',
+          foreground: '#64748b',
         },
         destructive: {
-          DEFAULT: '#EF4444',
+          DEFAULT: '#ef4444',
           foreground: '#FFFFFF',
         },
         popover: {
           DEFAULT: '#FFFFFF',
-          foreground: '#1E293B',
+          foreground: '#01030d',
         },
         card: {
           DEFAULT: '#FFFFFF',
-          foreground: '#1E293B',
+          foreground: '#01030d',
         },
         // Adding app-specific colors
-        appbg: '#F8FAFC',
-        textdark: '#1E293B',
+        appbg: '#f8fafc',
+        textdark: '#01030d',
+        // Custom palette colors
+        palette: {
+          lightblue: '#9bd5e9',
+          mediumblue: '#4f8391',
+          darkblue: '#053e5d',
+          navyblue: '#0a2247',
+          darkest: '#01030d'
+        }
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -76,8 +84,8 @@ export default {
           to: { height: "0" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 5px rgba(59, 130, 246, 0.5)" },
-          "50%": { boxShadow: "0 0 15px rgba(59, 130, 246, 0.8)" },
+          "0%, 100%": { boxShadow: "0 0 5px rgba(155, 213, 233, 0.5)" },
+          "50%": { boxShadow: "0 0 15px rgba(155, 213, 233, 0.8)" },
         },
         "slide-up-fade": {
           "0%": { opacity: "0", transform: "translateY(10px)" },
@@ -113,6 +121,16 @@ export default {
           "70%": { transform: "scale(0.9)", opacity: "1" },
           "100%": { transform: "scale(1)", opacity: "1" },
         },
+        "wave": {
+          "0%": { transform: "translateX(0) translateZ(0) scaleY(1)" },
+          "50%": { transform: "translateX(-25%) translateZ(0) scaleY(0.55)" },
+          "100%": { transform: "translateX(-50%) translateZ(0) scaleY(1)" },
+        },
+        "flow": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -126,10 +144,18 @@ export default {
         "float": "float 3s infinite ease-in-out",
         "spin-slow": "spin-slow 10s linear infinite",
         "bounce-in": "bounce-in 0.7s ease-out",
+        "wave": "wave 25s -3s linear infinite",
+        "flow": "flow 15s ease infinite",
       },
       skew: {
         '30': '30deg',
       },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'blue-gradient': 'linear-gradient(to right, #053e5d, #0a2247)',
+        'wave-pattern': "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%239bd5e9' fill-opacity='0.4' d='M0,192L48,176C96,160,192,128,288,117.3C384,107,480,117,576,144C672,171,768,213,864,224C960,235,1056,213,1152,186.7C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E\")",
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],
