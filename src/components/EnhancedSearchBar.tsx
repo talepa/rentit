@@ -82,39 +82,40 @@ const EnhancedSearchBar: React.FC<SearchBarProps> = ({
     setActiveFilters(newActiveFilters);
   };
 
-  const handlePopularItems = () => {
-    navigate('/categories?popular=true');
-  };
-
-  const handleVerifiedRentals = () => {
-    navigate('/categories?verified=true');
-  };
-
-  const handleFreeDelivery = () => {
-    navigate('/categories?delivery=free');
-  };
-
-  return <div className={`${className} w-full`}>
+  return (
+    <div className={`${className} w-full`}>
       <div className="relative flex flex-col gap-3">
-        <div className="flex flex-col md:flex-row gap-2">
-          {/* Simplified Search Input */}
+        <div className="flex items-center gap-2 max-w-3xl mx-auto w-full">
+          {/* Search Input */}
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input type="text" placeholder="What are you looking for?" value={query} onChange={e => setQuery(e.target.value)} className="pl-10 border-[#9bd5e9] focus:ring-[#053e5d] focus:border-[#053e5d] bg-white" />
+            <Input 
+              type="text" 
+              placeholder="What are you looking for?" 
+              value={query} 
+              onChange={e => setQuery(e.target.value)} 
+              className="pl-10 border-[#9bd5e9] focus:ring-[#053e5d] focus:border-[#053e5d] bg-white rounded-full" 
+              onKeyUp={(e) => {
+                if (e.key === 'Enter') handleSearch();
+              }}
+            />
           </div>
 
-          {/* Filter Menu - Now contains location, date, category */}
+          {/* Filter Menu */}
           <FilterMenu onFilter={handleFilterUpdate} />
           
           {/* Search Button */}
-          <Button onClick={handleSearch} className="bg-[#053e5d] hover:bg-[#0a2247] text-white">
+          <Button 
+            onClick={handleSearch} 
+            className="bg-[#053e5d] hover:bg-[#0a2247] text-white rounded-full"
+          >
             Search
           </Button>
         </div>
 
         {/* Active Filters Display */}
         {activeFilters.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-1">
+          <div className="flex flex-wrap gap-2 mt-1 max-w-3xl mx-auto">
             {activeFilters.map((filter, index) => (
               <div key={index} className="bg-[#9bd5e9]/20 hover:bg-[#9bd5e9]/30 text-[#053e5d] text-xs px-2 py-1 rounded-full">
                 {filter}
@@ -122,21 +123,9 @@ const EnhancedSearchBar: React.FC<SearchBarProps> = ({
             ))}
           </div>
         )}
-
-        {/* Centered Quick filter buttons */}
-        <div className="flex justify-center flex-wrap gap-4 mt-2">
-          <Button variant="ghost" size="sm" onClick={handlePopularItems} className="hover:bg-[#9bd5e9]/20 text-[#053e5d]">
-            Popular items
-          </Button>
-          <Button variant="ghost" size="sm" onClick={handleVerifiedRentals} className="hover:bg-[#9bd5e9]/20 text-[#053e5d]">
-            Verified rentals
-          </Button>
-          <Button variant="ghost" size="sm" onClick={handleFreeDelivery} className="hover:bg-[#9bd5e9]/20 text-[#053e5d]">
-            Free delivery
-          </Button>
-        </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default EnhancedSearchBar;
