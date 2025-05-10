@@ -70,13 +70,39 @@
 
   body {
     @apply bg-background text-foreground font-inter;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(74, 128, 240, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(255, 125, 84, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-poppins font-bold;
   }
+  
+  /* Enhanced Heading Styles */
+  h1 {
+    @apply relative;
+  }
+  
+  h1::after {
+    @apply content-[''] absolute -bottom-1 left-0 w-16 h-1 bg-gradient-to-r from-primary to-secondary rounded-full transform scale-x-0 origin-left transition-transform duration-300 ease-out;
+  }
+  
+  h1:hover::after {
+    @apply scale-x-100;
+  }
+  
+  h2 {
+    @apply relative inline-block;
+  }
+  
+  h2::before {
+    @apply content-[''] absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-primary/30 to-secondary/30 rounded-full;
+  }
 }
 
+/* Enhanced Animations */
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -127,6 +153,18 @@
   100% { width: 0; }
 }
 
+@keyframes wave {
+  0% { transform: translateX(0) translateZ(0) scaleY(1); }
+  50% { transform: translateX(-25%) translateZ(0) scaleY(0.55); }
+  100% { transform: translateX(-50%) translateZ(0) scaleY(1); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 @layer utilities {
   .animate-fade-in {
     animation: fade-in 0.5s ease-out forwards;
@@ -169,6 +207,15 @@
     animation: typing 3s steps(40, end) infinite;
   }
   
+  .animate-wave {
+    animation: wave 25s -3s linear infinite;
+  }
+  
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 15s ease infinite;
+  }
+  
   /* Button animations & effects */
   .btn-animated {
     @apply transition-all duration-300 relative overflow-hidden;
@@ -209,5 +256,69 @@
   
   .hover-scale {
     @apply transition-transform duration-300 hover:scale-105;
+  }
+  
+  /* Glass effect utilities */
+  .glass {
+    @apply bg-white/20 backdrop-blur-md border border-white/30 shadow-lg;
+  }
+  
+  .glass-dark {
+    @apply bg-gray-900/50 backdrop-blur-md border border-gray-800/30 shadow-lg;
+  }
+  
+  /* Wave decorator */
+  .wave-decorator {
+    @apply w-full h-24 relative overflow-hidden;
+  }
+  
+  .wave-decorator::before {
+    content: '';
+    @apply absolute w-[200%] h-full bg-gradient-to-r from-primary/20 to-secondary/20 animate-wave;
+    mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z' opacity='.25' fill='%23FFFFFF'/%3E%3C/svg%3E");
+    mask-size: 100% 100%;
+  }
+}
+
+/* Responsive text size adjustments */
+@media (max-width: 640px) {
+  .text-responsive {
+    @apply text-sm;
+  }
+  
+  h1.text-responsive {
+    @apply text-2xl;
+  }
+  
+  h2.text-responsive {
+    @apply text-xl;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .text-responsive {
+    @apply text-base;
+  }
+  
+  h1.text-responsive {
+    @apply text-3xl;
+  }
+  
+  h2.text-responsive {
+    @apply text-2xl;
+  }
+}
+
+@media (min-width: 1025px) {
+  .text-responsive {
+    @apply text-lg;
+  }
+  
+  h1.text-responsive {
+    @apply text-4xl;
+  }
+  
+  h2.text-responsive {
+    @apply text-3xl;
   }
 }

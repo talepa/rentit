@@ -1,267 +1,155 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Search } from 'lucide-react';
 
 interface LocationMapProps {
   initialLocation?: { lat: number; lng: number };
-  onLocationSelect?: (location: { lat: number; lng: number }) => void;
+  onLocationChange?: (location: { lat: number; lng: number }) => void;
 }
 
-const LocationMap: React.FC<LocationMapProps> = ({ 
-  initialLocation = { lat: 40.7128, lng: -74.0060 }, // Default to NYC
-  onLocationSelect 
-}) => {
-  const [apiKey, setApiKey] = useState<string>('');
+const LocationMap = ({
+  initialLocation = { lat: 40.7128, lng: -74.006 },
+  onLocationChange
+}: LocationMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const [mapLoaded, setMapLoaded] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState(initialLocation);
-  const [locationName, setLocationName] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [marker, setMarker] = useState<google.maps.Marker | null>(null);
+  const [location, setLocation] = useState(initialLocation);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  // Input field for API key (temporary solution)
-  const handleApiKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setApiKey(e.target.value);
-  };
-
-  // Load Google Maps when API key is provided
   useEffect(() => {
-    if (!apiKey || !mapRef.current || mapLoaded) return;
+    if (!mapRef.current) return;
 
-    // Load Google Maps script
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-    script.async = true;
-    script.defer = true;
-    
-    script.onload = () => {
-      setMapLoaded(true);
-      initMap();
-    };
-    
-    document.head.appendChild(script);
-    
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, [apiKey, mapLoaded]);
-
-  // Initialize map
-  const initMap = () => {
-    if (!window.google || !mapRef.current) return;
-
-    const map = new window.google.maps.Map(mapRef.current, {
-      center: selectedLocation,
+    // Initialize the map
+    const mapInstance = new google.maps.Map(mapRef.current, {
+      center: location,
       zoom: 13,
       mapTypeControl: false,
       fullscreenControl: false,
-      streetViewControl: false,
+      streetViewControl: false
     });
 
-    // Add marker for initial location
-    const marker = new window.google.maps.Marker({
-      position: selectedLocation,
-      map: map,
-      draggable: true,
-      animation: window.google.maps.Animation.DROP,
+    setMap(mapInstance);
+
+    // Create a marker at the initial location
+    const markerInstance = new google.maps.Marker({
+      position: location,
+      map: mapInstance,
+      animation: google.maps.Animation.DROP,
+      draggable: true
     });
 
-    // Update location when marker is dragged
-    marker.addListener('dragend', () => {
-      const position = marker.getPosition();
+    setMarker(markerInstance);
+
+    // Handle marker drag events to update location
+    markerInstance.addListener('dragend', () => {
+      const position = markerInstance.getPosition();
       if (position) {
         const newLocation = { lat: position.lat(), lng: position.lng() };
-        setSelectedLocation(newLocation);
-        if (onLocationSelect) {
-          onLocationSelect(newLocation);
+        setLocation(newLocation);
+        if (onLocationChange) {
+          onLocationChange(newLocation);
         }
-        // Get address for the location
-        const geocoder = new window.google.maps.Geocoder();
-        geocoder.geocode({ location: newLocation }, (results, status) => {
-          if (status === 'OK' && results && results[0]) {
-            setLocationName(results[0].formatted_address);
-          }
-        });
       }
     });
 
-    // Add search box
-    const input = document.createElement('input');
-    input.placeholder = 'Search for a location';
-    input.className = 'map-search-input';
-    input.style.cssText = 'padding:10px; margin:10px; border:1px solid #ccc; border-radius:4px; width:calc(100% - 20px)';
-    
-    const searchBox = new window.google.maps.places.SearchBox(input);
-    map.controls[window.google.maps.ControlPosition.TOP_CENTER].push(input);
-    
-    map.addListener('bounds_changed', () => {
-      searchBox.setBounds(map.getBounds()!);
-    });
-    
-    searchBox.addListener('places_changed', () => {
-      const places = searchBox.getPlaces();
-      if (!places || places.length === 0) return;
+    // Initialize the places search box if the searchInputRef is available
+    if (searchInputRef.current && window.google?.maps?.places) {
+      const searchBox = new google.maps.places.SearchBox(searchInputRef.current);
       
-      const place = places[0];
-      if (!place.geometry || !place.geometry.location) return;
-      
-      // Set map center to the selected place
-      map.setCenter(place.geometry.location);
-      map.setZoom(15);
-      
-      // Update marker position
-      marker.setPosition(place.geometry.location);
-      
-      // Update selected location and trigger callback
-      const newLocation = { 
-        lat: place.geometry.location.lat(), 
-        lng: place.geometry.location.lng() 
-      };
-      setSelectedLocation(newLocation);
-      setLocationName(place.formatted_address || '');
-      if (onLocationSelect) {
-        onLocationSelect(newLocation);
+      // FIX: Instead of directly using the input as controls, we create a container
+      // and properly add it to the map controls
+      if (searchInputRef.current) {
+        const searchBoxContainer = document.createElement('div');
+        searchBoxContainer.appendChild(searchInputRef.current);
+        
+        // Position the search box in the top center of the map
+        mapInstance.controls[google.maps.ControlPosition.TOP_CENTER].push(searchBoxContainer);
       }
-    });
 
-    // Get initial location name
-    const geocoder = new window.google.maps.Geocoder();
-    geocoder.geocode({ location: selectedLocation }, (results, status) => {
-      if (status === 'OK' && results && results[0]) {
-        setLocationName(results[0].formatted_address);
-      }
-    });
-  };
+      searchBox.addListener('places_changed', () => {
+        const places = searchBox.getPlaces();
+        if (!places || places.length === 0) return;
 
-  const handleShareLocation = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'My Location',
-        text: `Check out this location: ${locationName}`,
-        url: `https://www.google.com/maps/search/?api=1&query=${selectedLocation.lat},${selectedLocation.lng}`
-      }).catch(error => console.log('Error sharing', error));
-    } else {
-      // Fallback for browsers that don't support Web Share API
-      const url = `https://www.google.com/maps/search/?api=1&query=${selectedLocation.lat},${selectedLocation.lng}`;
-      navigator.clipboard.writeText(url);
-      alert('Location link copied to clipboard!');
-    }
-  };
+        const place = places[0];
+        if (!place.geometry || !place.geometry.location) return;
 
-  const useCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const currentLocation = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          setSelectedLocation(currentLocation);
-          
-          if (mapLoaded && window.google) {
-            const map = new window.google.maps.Map(mapRef.current!, {
-              center: currentLocation,
-              zoom: 15
-            });
-            
-            new window.google.maps.Marker({
-              position: currentLocation,
-              map: map,
-              draggable: true
-            });
-            
-            // Get address for the location
-            const geocoder = new window.google.maps.Geocoder();
-            geocoder.geocode({ location: currentLocation }, (results, status) => {
-              if (status === 'OK' && results && results[0]) {
-                setLocationName(results[0].formatted_address);
-              }
-            });
-            
-            if (onLocationSelect) {
-              onLocationSelect(currentLocation);
-            }
-          }
-        },
-        (error) => {
-          console.error("Error getting current location:", error);
-          alert("Unable to retrieve your location. Please check your browser permissions.");
+        // Update the map center and marker position
+        mapInstance.setCenter(place.geometry.location);
+        markerInstance.setPosition(place.geometry.location);
+
+        // Update the location state
+        const newLocation = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        };
+        setLocation(newLocation);
+        if (onLocationChange) {
+          onLocationChange(newLocation);
         }
-      );
-    } else {
-      alert("Geolocation is not supported by this browser.");
+      });
     }
+
+    return () => {
+      // Clean up event listeners if needed
+    };
+  }, [onLocationChange]);
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="flex gap-2 items-center">
-          <MapPin size={16} />
-          Location
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-3xl">
-        <DialogHeader>
-          <DialogTitle>Select Location</DialogTitle>
-        </DialogHeader>
-        
-        {!apiKey && (
-          <div className="mb-4">
-            <p className="text-sm text-gray-600 mb-2">
-              Please enter your Google Maps API key:
-            </p>
+    <div className="relative">
+      <Button 
+        variant="outline" 
+        size="sm" 
+        onClick={toggleExpanded}
+        className="flex items-center gap-2 bg-white"
+      >
+        <Search className="h-4 w-4" />
+        <span>Location</span>
+      </Button>
+      
+      {isExpanded && (
+        <div className="absolute z-50 top-full mt-2 w-72 bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="p-3 border-b">
             <input
+              ref={searchInputRef}
               type="text"
-              value={apiKey}
-              onChange={handleApiKeyChange}
-              placeholder="Enter Google Maps API Key"
-              className="w-full p-2 border border-gray-300 rounded"
+              placeholder="Search for a location..."
+              className="w-full px-3 py-2 border rounded-md text-sm"
             />
-            <p className="mt-2 text-xs text-gray-500">
-              You can get an API key from the <a href="https://console.cloud.google.com/google/maps-apis" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google Cloud Console</a>
-            </p>
           </div>
-        )}
-        
-        <div className="flex flex-col gap-4">
-          <div ref={mapRef} className="w-full h-[400px] bg-gray-100 rounded-md relative">
-            {!mapLoaded && apiKey && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-              </div>
-            )}
-            {!apiKey && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-gray-500">Enter API key to load maps</p>
-              </div>
-            )}
-          </div>
-          
-          <div className="flex flex-col gap-2">
-            <p className="text-sm font-medium">Selected Location:</p>
-            <p className="text-sm text-gray-600">{locationName || "No location selected"}</p>
-            
-            <div className="flex gap-2 mt-2">
-              <Button onClick={useCurrentLocation} variant="outline" size="sm" className="flex gap-1 items-center">
-                <MapPin size={14} />
-                Use My Location
-              </Button>
-              
-              <Button onClick={handleShareLocation} variant="outline" size="sm" disabled={!locationName}>
-                Share Location
-              </Button>
-            </div>
+          <div 
+            ref={mapRef} 
+            className="w-full h-48"
+          />
+          <div className="p-3 flex justify-between">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={toggleExpanded}
+            >
+              Cancel
+            </Button>
+            <Button 
+              size="sm" 
+              onClick={() => {
+                if (onLocationChange) {
+                  onLocationChange(location);
+                }
+                toggleExpanded();
+              }}
+            >
+              Confirm Location
+            </Button>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      )}
+    </div>
   );
 };
 

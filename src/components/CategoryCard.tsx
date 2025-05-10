@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { 
@@ -10,7 +10,8 @@ import {
   CarouselPrevious,
   CarouselNext 
 } from "@/components/ui/carousel";
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface CategoryCardProps {
   id: string;
@@ -30,6 +31,7 @@ interface CategoryCarouselProps {
 
 const CategoryCard = ({ id, name, icon, color }: CategoryCardProps) => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   
   // Simplified animations for mobile to improve performance
   const mobileAnimations = {
@@ -60,8 +62,13 @@ const CategoryCard = ({ id, name, icon, color }: CategoryCardProps) => {
 
   const animations = isMobile ? mobileAnimations : desktopAnimations;
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate(`/categories/${id}`);
+  };
+
   return (
-    <Link to={`/categories/${id}`} className="group">
+    <Link to={`/categories/${id}`} className="group" onClick={handleClick}>
       <motion.div 
         className="flex flex-col items-center p-4 transition-all duration-300 transform hover:shadow-lg rounded-lg"
         initial={animations.initial}
@@ -95,37 +102,59 @@ const CategoryCard = ({ id, name, icon, color }: CategoryCardProps) => {
 
 export const CategoryCarousel = ({ categories }: CategoryCarouselProps) => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+
+  const handleViewAll = () => {
+    navigate('/categories');
+  };
 
   return (
-    <Carousel
-      className="w-full"
-      opts={{
-        align: "start",
-        loop: true,
-      }}
-    >
-      <CarouselContent className="-ml-2 md:-ml-4">
-        {categories.map((category) => (
-          <CarouselItem 
-            key={category.id} 
-            className={`pl-2 md:pl-4 ${isMobile ? 'basis-1/3' : 'basis-1/6'}`}
-          >
-            <CategoryCard 
-              id={category.id}
-              name={category.name}
-              icon={category.icon}
-              color={category.color}
-            />
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious>
-        <ChevronLeft className="h-4 w-4" />
-      </CarouselPrevious>
-      <CarouselNext>
-        <ChevronRight className="h-4 w-4" />
-      </CarouselNext>
-    </Carousel>
+    <div className="relative">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary inline-block">
+          Discover Categories
+        </h2>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="flex items-center gap-1 text-primary hover:text-primary/80"
+          onClick={handleViewAll}
+        >
+          View All
+          <ArrowRight className="h-4 w-4 ml-1 animate-bounce-subtle" />
+        </Button>
+      </div>
+      
+      <Carousel
+        className="w-full"
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+      >
+        <CarouselContent className="-ml-2 md:-ml-4">
+          {categories.map((category) => (
+            <CarouselItem 
+              key={category.id} 
+              className={`pl-2 md:pl-4 ${isMobile ? 'basis-1/3' : 'basis-1/6'}`}
+            >
+              <CategoryCard 
+                id={category.id}
+                name={category.name}
+                icon={category.icon}
+                color={category.color}
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="animate-pulse-subtle">
+          <ChevronLeft className="h-4 w-4" />
+        </CarouselPrevious>
+        <CarouselNext className="animate-pulse-subtle">
+          <ChevronRight className="h-4 w-4" />
+        </CarouselNext>
+      </Carousel>
+    </div>
   );
 };
 
