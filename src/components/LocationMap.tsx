@@ -59,12 +59,12 @@ const LocationMap = ({
     if (searchInputRef.current && window.google?.maps?.places) {
       const searchBox = new google.maps.places.SearchBox(searchInputRef.current);
       
-      // Fix: Create a container div and properly add it to the controls
+      // Fix: Use HTMLElement instead of MVCObject
       const searchBoxContainer = document.createElement('div');
       searchBoxContainer.appendChild(searchInputRef.current.cloneNode(true));
       
-      // Use controls array for proper type checking
-      mapInstance.controls[google.maps.ControlPosition.TOP_CENTER].push(searchBoxContainer as unknown as google.maps.MVCObject);
+      // Push the container as HTMLElement
+      mapInstance.controls[google.maps.ControlPosition.TOP_CENTER].push(searchBoxContainer);
 
       searchBox.addListener('places_changed', () => {
         const places = searchBox.getPlaces();
