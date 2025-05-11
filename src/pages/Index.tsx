@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
@@ -671,4 +672,18 @@ const Index = () => {
           </h2>
           <Button 
             variant="ghost" 
-            className="text-[#053e5d] hover:text-[#0a2247] hover:bg-[#9bd5e9
+            className="text-[#053e5d] hover:text-[#0a2247] hover:bg-[#9bd5e9]/10"
+            onClick={() => navigate('/featured')}
+          >
+            View All
+            <ArrowRight className="ml-1 h-4 w-4" />
+          </Button>
+        </div>
+        
+        <FeatureSection items={featuredProducts} />
+      </div>
+    </div>
+  );
+};
+
+export default Index;
