@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Verify from "./pages/Verify";
 import CategoryListing from "./pages/CategoryListing";
 import ItemDetail from "./pages/ItemDetail";
 import NotFound from "./pages/NotFound";
@@ -15,6 +16,8 @@ import MyBookings from "./pages/MyBookings";
 import Messages from "./pages/Messages";
 import MyListings from "./pages/MyListings";
 import Profile from "./pages/Profile";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 
 const queryClient = new QueryClient();
 
@@ -99,6 +102,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/verify" element={<Verify />} />
               <Route path="/categories" element={<CategoryListing />} />
               <Route path="/categories/:category" element={<CategoryListing />} />
               <Route path="/item/:id" element={<ItemDetail />} />
@@ -107,6 +111,8 @@ const App = () => (
               <Route path="/my-listings" element={<MyListings />} />
               <Route path="/messages" element={<Messages />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />

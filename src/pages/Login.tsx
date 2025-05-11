@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,6 +13,17 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const justVerified = location.state?.verified || false;
+
+  React.useEffect(() => {
+    if (justVerified) {
+      toast({
+        title: "Account verified",
+        description: "You can now log in to your account",
+      });
+    }
+  }, [justVerified]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,11 +35,8 @@ const Login = () => {
       
       // Demo login - would be replaced with actual authentication
       if (email && password) {
-        toast({
-          title: "Login successful",
-          description: "Welcome back to RentMate!",
-        });
-        navigate('/');
+        // Instead of directly navigating to home, we'll navigate to the OTP verification
+        navigate('/verify', { state: { email, fromLogin: true } });
       } else {
         toast({
           title: "Login failed",
