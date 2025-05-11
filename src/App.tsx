@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Verify from "./pages/Verify";
 import CategoryListing from "./pages/CategoryListing";
 import ItemDetail from "./pages/ItemDetail";
 import NotFound from "./pages/NotFound";
@@ -99,6 +100,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/verify" element={<Verify />} />
               <Route path="/categories" element={<CategoryListing />} />
               <Route path="/categories/:category" element={<CategoryListing />} />
               <Route path="/item/:id" element={<ItemDetail />} />
