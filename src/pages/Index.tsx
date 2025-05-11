@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
@@ -680,7 +679,10 @@ const Index = () => {
           </Button>
         </div>
         
-        <FeatureSection items={featuredProducts} />
+        <FeatureSection 
+          title="Featured Products"
+          items={featuredProducts} 
+        />
       </div>
     </div>
   );

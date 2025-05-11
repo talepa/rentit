@@ -41,7 +41,8 @@ const Verify = () => {
         });
         
         if (fromLogin) {
-          navigate('/profile');
+          // Redirect to the home page instead of profile after login
+          navigate('/');
         } else {
           navigate('/login', { state: { verified: true } });
         }
@@ -103,7 +104,6 @@ const Verify = () => {
                             key={index}
                             index={index}
                             className="h-12 w-12 text-lg"
-                            {...slot}
                           />
                         ))}
                       </InputOTPGroup>
